@@ -1,1 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Sentinel - ML/DL Network Intrusion Detection</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
 
+<div id="flashScreen">
+    <div class="sentinel-icon">
+        <i class="fas fa-robot"></i>
+        <i class="fas fa-shield-halved shield-overlay"></i>
+    </div>
+    <h1>SENTINEL</h1>
+    <div class="subtitle">Global Threat Monitoring & Intrusion Detection</div>
+    <div class="loader"></div>
+    <div class="status-text" id="flashStatus">Initializing PyTorch models & Global Map...</div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="version-text">v2.0 · Global Threat Intelligence</div>
+</div>
+
+<div id="mainApp">
+    
+    <header class="app-header">
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fas fa-globe-americas"></i>
+                <i class="fas fa-shield-halved shield-small"></i>
+            </div>
+            <div>
+                <h1>Sentinel</h1>
+                <small>Global Threat Intelligence · 10 Websites</small>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="mlStatusBtn" class="ml-status-btn">
+                <i class="fas fa-brain"></i> 
+                <span id="mlStatusText">PyTorch: Active</span>
+                <span class="status-indicator online"></span>
+            </button>
+            <button id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button id="receiptBtn" class="primary"><i class="fas fa-file-alt"></i> Generate Report</button>
+        </div>
+    </header>
+    
+    <div class="map-section">
+        <div class="map-header">
+            <h3><i class="fas fa-globe"></i> Global Threat Map</h3>
+            <div class="map-controls">
+                <span class="threat-count" id="globalThreatCount">🌍 0 active threats</span>
+                <button id="toggleMapAnimation" class="map-btn">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button id="refreshMapBtn" class="map-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="map-container" id="threatMapContainer"></div>
+        <div class="map-stats">
+            <div class="stat-item">
+                <span class="stat-label">Total Threats</span>
+                <span class="stat-value" id="mapTotalThreats">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Critical</span>
+                <span class="stat-value critical" id="mapCriticalThreats">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">High</span>
+                <span class="stat-value high" id="mapHighThreats">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Medium</span>
+                <span class="stat-value medium" id="mapMediumThreats">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Low</span>
+                <span class="stat-value low" id="mapLowThreats">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Hotspots</span>
+                <span class="stat-value" id="mapHotspots">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ml-banner">
+        <div class="ml-banner-content">
+            <div class="ml-icon-container">
+                <i class="fas fa-brain"></i>
+                <span class="pulse-dot"></span>
+            </div>
+            <div>
+                <strong>PyTorch DL Engine:</strong> 
+                <span id="mlEngineStatus" class="status-active">Active</span> · 
+                <span id="detectionAccuracy">98.7%</span> accuracy · 
+                <span id="threatsDetected">0</span> threats · 
+                <span id="modelVersion">v2.3.1</span>
+            </div>
+        </div>
+        <div class="ml-banner-actions">
+            <button id="trainModelBtn" class="train-btn"><i class="fas fa-play"></i> Train</button>
+            <button id="exportModelBtn" class="export-btn"><i class="fas fa-download"></i> Export</button>
+        </div>
+    </div>
+    
+    <div class="swiper-section">
+        <div class="site-info">
+            <span class="status-dot" id="siteStatusDot"></span>
+            <span class="site-name" id="currentSiteName">acme-corp.com</span>
+            <span class="site-badge" id="siteCounter">1 / 10</span>
+            <span class="threat-level" id="threatLevel">🟢 Low Risk</span>
+            <span class="site-location" id="siteLocation">📍 USA</span>
+        </div>
+        <div class="swiper-nav">
+            <button id="prevSiteBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+            <button id="nextSiteBtn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+    
+    <div class="graphs-grid" id="graphsContainer"></div>
+    
+    <div class="logs-section">
+        <div class="logs-header">
+            <h3><i class="fas fa-list-ul"></i> Intrusion Logs</h3>
+            <div class="compare-buttons" id="compareButtons">
+                <button class="active-compare" data-compare="yearly">Yearly</button>
+                <button data-compare="monthly">Monthly</button>
+                <button data-compare="weekly">Weekly</button>
+                <button data-compare="day">Day-wise</button>
+            </div>
+        </div>
+        <div class="log-table-wrap">
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Attack Type</th>
+                        <th>Source IP</th>
+                        <th>Origin</th>
+                        <th>ML Confidence</th>
+                        <th>Severity</th>
+                        <th>Diff</th>
+                    </tr>
+                </thead>
+                <tbody id="logBody">
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding:30px; color: #a78ec9;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading logs...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="receipt-area">
+        <div class="receipt-text">
+            <i class="fas fa-file-invoice"></i>
+            <span id="receiptSummary">Loading summary...</span>
+        </div>
+        <div class="receipt-actions">
+            <button id="viewReceiptBtn"><i class="fas fa-eye"></i> View</button>
+            <button id="downloadReceiptBtn" class="primary"><i class="fas fa-download"></i> Download</button>
+        </div>
+    </div>
+    
+    <div class="status-bar">
+        <div class="status-group">
+            <div class="firebase-status">
+                <span class="dot" id="firebaseDot"></span>
+                <span id="firebaseStatusText">Firebase: Connected</span>
+            </div>
+            <div class="ml-status">
+                <span class="dot" id="mlDot"></span>
+                <span id="mlModelStatus">PyTorch Model: v2.3.1 · Active</span>
+            </div>
+            <div class="global-status">
+                <span class="dot online"></span>
+                <span id="globalStatusText">Global Map: Active</span>
+            </div>
+        </div>
+        <div class="status-right">
+            <span id="lastUpdated">Last updated: just now</span>
+            <span class="divider">|</span>
+            <span id="totalThreats">Total: 0</span>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/threat-map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

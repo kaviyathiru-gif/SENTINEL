@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "sentinel-ids",
+    "production": "sentinel-ids-prod",
+    "staging": "sentinel-ids-staging"
+  },
+  "targets": {
+    "sentinel-ids": {
+      "hosting": {
+        "production": ["sentinel-ids-prod"]
+      }
+    }
+  },
+  "etags": {}
+}

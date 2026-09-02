@@ -1,0 +1,32 @@
+{
+  "name": "sentinel-nids",
+  "version": "1.0.0",
+  "description": "Enterprise ML/DL Network Intrusion Detection System with Real-Time Dashboard",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend & npm run dev --workspace=backend",
+    "build": "npm run build --workspace=frontend && npm run build --workspace=backend",
+    "start": "npm start --workspace=backend",
+    "clean": "rm -rf frontend/node_modules backend/node_modules node_modules",
+    "install-all": "npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "nids",
+    "network-intrusion-detection",
+    "cybersecurity",
+    "machine-learning",
+    "deep-learning",
+    "real-time",
+    "dashboard",
+    "threat-detection"
+  ],
+  "author": "Sentinel Security Team",
+  "license": "proprietary"
+}

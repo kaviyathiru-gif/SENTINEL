@@ -31,3 +31,17 @@
     "eslint-plugin-react": "^7.33.0"
   }
 }
+{
+  "type": "service_account",
+  "project_id": "studied-indexer-464409-e1",
+  "private_key_id": "9a34727f3d36071d5dc87735fca258e6eb08bc8c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDa2hRAIyHf2H/y\nHD9vpgp3evsLAypwhnhaWKUvHOXYMnk04AVhd9Odk6E0zc7SnOK0vnyyjDR0SIem\n0toD4Ro6doHCVcH0MFmOrFjGhstXXAii15Y/abydEz8rCvROEpE7WBaA98VJP4fn\niq9TG/IVHQ0CuWDbJ/1WU2ucjPXnaCVIioCfAZLmzC9U7K1UM+keXp1OjutekiKn\nLAp/HflaKb367A1xFvIkHgAvSe90bjtHWywbDvJsychQJu0OEejri549oTwsC994\n470c8wairUf3WZDV5ETflUd56JeffVQQCgclTNUeFQeQ5ZEkQ98LktrxZIwoNbM3\nhndl7sFrAgMBAAECggEACuXkL0NwmuR9jpFgiU9D4ypBGQ3Jzbusf5c9doiiW288\nAOmM6wscAxNIakg7XdqJIYYA0KVRsV6xPpnuWFYbx8CB+qrpkx7bPtMPQqeQtaN0\nHKPOrA64YTwFn7+WZdLf34wl5rsv3FNpEZsi2ukf13RQYwvXKmKl52gVCkEst56s\n7V75h84DTlb3fc4tVxeDS5L0ongjJ3UstTooSoKNiKzb+9UDQp6DnROJwWJF2X/q\niRUnWSGGVcr5C+oPSk/GY0uu0v4yJbCs9B2+9+5YEaTGuvEW2Sv61fYJjADiywpa\n1d/jG0M5Z2wn29mq2uBdTP6ywHKnFCEHvuZ2tAq3YQKBgQD5fabNiY94Bu/lX1Ew\n5AGIMoiS70nqMeSaTFudnu/JUdbNO0c2MLbLpFBpaq5yGkHtvGH8Dh8WVnrMXX4W\nAUc8f9CSK67CDmNq2Q4SkhzrNqcC0RkM4P86nFIZIPiROBN5ZOrC3E5tJ9ddO74n\nRHrV3dyxXy0S0WmATFIPuAL4CwKBgQDgj8pAnOn/PBap/fLIO5KjMvbuX639y0O9\nHZmDdEs1Tz7Em/PTedBYa93XBO3CKjkqNEdSnypXiDkwg4lAIo37Xlm6jbqxWVP/\n/tBdVxQT0F2gcL+IIgNbnPjvCle0M3jsz2J+hIGg+ozzFqHtEToFCDc4vQ3lm6mT\ncuU1UXtYIQKBgFhDJIyYOsI6qgnaY63JK+WUAw8ASoToq7gOhWbIwInXQweODg5U\nw4ZdlfkFPbuuIF7Lg1qZYFQVuhGsjZuZTitQCGh9vbB3SKKXMUxOlp570i/D63nL\n618/yCeNq4IsdW8/zXGsYK5rJtyb8xSPPGmGuLmjMx3yKcGyvmFDNwGrAoGBAMpW\nZWvAt0rmLpmvGxH2M5NfOYXhqlmSzA9b21XJ9HYtWCY5SwKSsPrq/nFenIimGOoB\nPv6gMbu7H6Sp8IJcYEhNZFYmnEBud7SjOcXQz2NnDOWikcGsvA/RKa/hRtM0ydG+\nr0XGSTLubxAdpXuBWSDtnSw/lIT9tFcKYKKhL51hAoGATIc26LOEFs8GF28yxRmH\nlJcG1sTagU+hEKSKFzgHoIWHBrk6w4NfkP66puNvQj2k5Tus0Y03rzMGy/CbInv6\nSLfhgX8YNoFBcDh/i1djL/kx+dk8RRyA9xW6uvQV4flQy9IthrjRKgU0H8sKg/QK\nm2Evdxgp+r650SZ4Rki0JuQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@studied-indexer-464409-e1.iam.gserviceaccount.com",
+  "client_id": "113348648221365798920",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40studied-indexer-464409-e1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+

@@ -1,0 +1,51 @@
+[debug] [2024-01-15T10:30:00.000Z] ----------------------------------------------------------------------
+[debug] [2024-01-15T10:30:00.000Z] Firebase CLI v13.0.0
+[debug] [2024-01-15T10:30:00.000Z] Platform: linux
+[debug] [2024-01-15T10:30:00.000Z] Node Version: v18.17.0
+[debug] [2024-01-15T10:30:00.000Z] Time: 2024-01-15T10:30:00.000Z
+[debug] [2024-01-15T10:30:00.000Z] ----------------------------------------------------------------------
+[debug] [2024-01-15T10:30:00.000Z] [firestore] Starting Firestore Emulator
+[debug] [2024-01-15T10:30:00.000Z] [firestore] Firestore Emulator running on port 8080
+[debug] [2024-01-15T10:30:00.000Z] [firestore] Firestore Emulator UI available at http://localhost:4000/firestore
+[debug] [2024-01-15T10:30:00.000Z] [auth] Starting Auth Emulator
+[debug] [2024-01-15T10:30:00.000Z] [auth] Auth Emulator running on port 9099
+[debug] [2024-01-15T10:30:00.000Z] [auth] Auth Emulator UI available at http://localhost:4000/auth
+[debug] [2024-01-15T10:30:00.000Z] [storage] Starting Storage Emulator
+[debug] [2024-01-15T10:30:00.000Z] [storage] Storage Emulator running on port 9199
+[debug] [2024-01-15T10:30:00.000Z] [storage] Storage Emulator UI available at http://localhost:4000/storage
+[debug] [2024-01-15T10:30:00.000Z] [functions] Starting Functions Emulator
+[debug] [2024-01-15T10:30:00.000Z] [functions] Functions Emulator running on port 5001
+[debug] [2024-01-15T10:30:00.000Z] [functions] Functions Emulator UI available at http://localhost:4000/functions
+[debug] [2024-01-15T10:30:00.000Z] [hosting] Starting Hosting Emulator
+[debug] [2024-01-15T10:30:00.000Z] [hosting] Hosting Emulator running on port 5000
+[debug] [2024-01-15T10:30:00.000Z] [hosting] Hosting Emulator UI available at http://localhost:4000/hosting
+[debug] [2024-01-15T10:30:00.000Z] All emulators started successfully
+[debug] [2024-01-15T10:30:00.000Z] Emulator UI available at http://localhost:4000
+[debug] [2024-01-15T10:30:00.000Z] ----------------------------------------------------------------------
+[debug] [2024-01-15T10:30:05.000Z] [firestore] GET /emulator/v1/projects/sentinel-ids/databases/(default)/documents/sentinelData
+[debug] [2024-01-15T10:30:05.000Z] [firestore] Query: collectionGroup=sentinelData
+[debug] [2024-01-15T10:30:05.000Z] [firestore] Response: 200 OK
+[debug] [2024-01-15T10:30:10.000Z] [firestore] POST /emulator/v1/projects/sentinel-ids/databases/(default)/documents/attackLogs
+[debug] [2024-01-15T10:30:10.000Z] [firestore] Document: attackLogs/log_001
+[debug] [2024-01-15T10:30:10.000Z] [firestore] Response: 200 OK
+[debug] [2024-01-15T10:30:15.000Z] [auth] GET /identitytoolkit.googleapis.com/v1/accounts:lookup
+[debug] [2024-01-15T10:30:15.000Z] [auth] Request: {idToken: "***"}
+[debug] [2024-01-15T10:30:15.000Z] [auth] Response: 200 OK
+[debug] [2024-01-15T10:30:20.000Z] [storage] GET /storage/v1/b/sentinel-ids/o/models%2Fmodel_v2.3.1.pth
+[debug] [2024-01-15T10:30:20.000Z] [storage] Response: 200 OK
+[debug] [2024-01-15T10:30:25.000Z] [functions] POST /functions/v1/processAttack
+[debug] [2024-01-15T10:30:25.000Z] [functions] Function: processAttack
+[debug] [2024-01-15T10:30:25.000Z] [functions] Response: 200 OK
+[debug] [2024-01-15T10:30:30.000Z] [hosting] GET /index.html
+[debug] [2024-01-15T10:30:30.000Z] [hosting] Response: 200 OK
+[debug] [2024-01-15T10:30:35.000Z] [hosting] GET /static/css/style.css
+[debug] [2024-01-15T10:30:35.000Z] [hosting] Response: 200 OK
+[debug] [2024-01-15T10:30:40.000Z] [firestore] GET /emulator/v1/projects/sentinel-ids/databases/(default)/documents/attackLogs
+[debug] [2024-01-15T10:30:40.000Z] [firestore] Query: collectionGroup=attackLogs, orderBy=timestamp DESC
+[debug] [2024-01-15T10:30:40.000Z] [firestore] Response: 200 OK
+[debug] [2024-01-15T10:30:45.000Z] [firestore] GET /emulator/v1/projects/sentinel-ids/databases/(default)/documents/threatIntelligence
+[debug] [2024-01-15T10:30:45.000Z] [firestore] Query: collectionGroup=threatIntelligence, orderBy=severity ASC
+[debug] [2024-01-15T10:30:45.000Z] [firestore] Response: 200 OK
+[debug] [2024-01-15T10:30:50.000Z] [storage] POST /storage/v1/b/sentinel-ids/o/reports
+[debug] [2024-01-15T10:30:50.000Z] [storage] File: reports/report_2024-01-15.txt
+[debug] [2024-01-15T10:30:50.000Z] [storage] Response: 200 OK

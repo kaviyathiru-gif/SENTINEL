@@ -1,0 +1,414 @@
+/**
+ * Sentinel - Detection Algorithms
+ * Advanced intrusion detection algorithms
+ */
+
+class DetectionAlgorithms {
+    constructor() {
+        this.algorithms = {
+            anomaly: this.anomalyDetection.bind(this),
+            signature: this.signatureDetection.bind(this),
+            heuristic: this.heuristicDetection.bind(this),
+            behavioral: this.behavioralDetection.bind(this),
+            ensemble: this.ensembleDetection.bind(this)
+        };
+        this.signatures = this.loadSignatures();
+        this.baselines = this.loadBaselines();
+    }
+
+    /**
+     * Load known attack signatures
+     */
+    loadSignatures() {
+        return [
+            { id: 'SQL_INJ_001', pattern: /(union|select|insert|update|delete|drop|alter)/i, type: 'SQL Injection' },
+            { id: 'XSS_001', pattern: /(<script|javascript:|onerror|onload|alert)/i, type: 'XSS' },
+            { id: 'DDOS_001', pattern: /(syn flood|udp flood|http flood)/i, type: 'DDoS' },
+            { id: 'BRUTE_001', pattern: /(brute|dictionary|password|login|attempt)/i, type: 'Brute Force' },
+            { id: 'CSRF_001', pattern: /(csrf|token|state|referer|origin)/i, type: 'CSRF' },
+            { id: 'RCE_001', pattern: /(exec|system|shell|cmd|eval|passthru)/i, type: 'RCE' },
+            { id: 'PATH_001', pattern: /(\.\.\/|\.\.\\|etc|passwd|shadow)/i, type: 'Path Traversal' },
+            { id: 'MITM_001', pattern: /(arp spoof|dns spoof|ssl strip)/i, type: 'Man-in-the-Middle' }
+        ];
+    }
+
+    /**
+     * Load baseline network behavior
+     */
+    loadBaselines() {
+        return {
+            normalTraffic: {
+                packetSizeMean: 512,
+                packetSizeStd: 150,
+                connectionsPerMinute: 5,
+                protocolDistribution: { TCP: 0.6, UDP: 0.3, ICMP: 0.1 },
+                portDistribution: { 80: 0.3, 443: 0.3, 22: 0.1, 53: 0.1, 25: 0.05, 110: 0.05, 143: 0.05, 993: 0.05 }
+            },
+            thresholds: {
+                packetSizeMax: 1500,
+                connectionsPerMinuteMax: 20,
+                byteRateMax: 1024000, // 1 MB/s
+                packetRateMax: 500, // packets per second
+                anomalyScoreThreshold: 0.7
+            }
+        };
+    }
+
+    /**
+     * Anomaly Detection Algorithm
+     * Detects statistical anomalies in network traffic
+     */
+    anomalyDetection(trafficData) {
+        const scores = [];
+        const baseline = this.baselines.normalTraffic;
+        const thresholds = this.baselines.thresholds;
+
+        // Check packet size anomaly
+        const packetSizeScore = this.zScore(trafficData.packetSize || 0, baseline.packetSizeMean, baseline.packetSizeStd);
+        scores.push(packetSizeScore);
+
+        // Check connection rate anomaly
+        const connRateScore = trafficData.connectionsPerMinute / thresholds.connectionsPerMinuteMax;
+        scores.push(Math.min(connRateScore, 1));
+
+        // Check protocol anomaly
+        const protocolScore = this.protocolAnomalyScore(trafficData.protocol, baseline.protocolDistribution);
+        scores.push(protocolScore);
+
+        // Check port anomaly
+        const portScore = this.portAnomalyScore(trafficData.dstPort, baseline.portDistribution);
+        scores.push(portScore);
+
+        // Check byte rate anomaly
+        const byteRateScore = (trafficData.bytesPerSecond || 0) / thresholds.byteRateMax;
+        scores.push(Math.min(byteRateScore, 1));
+
+        // Calculate overall anomaly score
+        const overallScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+
+        // Determine threat level
+        const isAttack = overallScore > thresholds.anomalyScoreThreshold;
+        const severity = this.getSeverity(overallScore);
+
+        return {
+            isAttack: isAttack,
+            confidence: overallScore,
+            severity: severity,
+            details: {
+                scores: scores,
+                overallScore: overallScore,
+                components: {
+                    packetSize: packetSizeScore,
+                    connectionRate: connRateScore,
+                    protocol: protocolScore,
+                    port: portScore,
+                    byteRate: byteRateScore
+                }
+            }
+        };
+    }
+
+    /**
+     * Signature Detection Algorithm
+     * Matches traffic against known attack signatures
+     */
+    signatureDetection(trafficData) {
+        const matches = [];
+        const data = trafficData.payload || trafficData.url || trafficData.data || '';
+
+        this.signatures.forEach(signature => {
+            if (signature.pattern.test(data)) {
+                matches.push({
+                    signatureId: signature.id,
+                    type: signature.type,
+                    confidence: 0.95,
+                    matchedPattern: signature.pattern.source
+                });
+            }
+        });
+
+        const isAttack = matches.length > 0;
+        const confidence = matches.length > 0 ? Math.min(0.95, matches.length * 0.2) : 0;
+
+        return {
+            isAttack: isAttack,
+            confidence: confidence,
+            severity: isAttack ? 'high' : 'safe',
+            details: {
+                matches: matches,
+                matchCount: matches.length,
+                types: matches.map(m => m.type)
+            }
+        };
+    }
+
+    /**
+     * Heuristic Detection Algorithm
+     * Uses rule-based heuristics to detect suspicious behavior
+     */
+    heuristicDetection(trafficData) {
+        const rules = [];
+        let score = 0;
+
+        // Rule 1: Suspicious packet size
+        if (trafficData.packetSize > 1400 || trafficData.packetSize < 64) {
+            score += 0.15;
+            rules.push({ rule: 'Suspicious packet size', weight: 0.15 });
+        }
+
+        // Rule 2: Unusual port combinations
+        const unusualPorts = [23, 22, 445, 3389, 1433, 3306, 5900, 69, 161, 162];
+        if (unusualPorts.includes(trafficData.dstPort) || unusualPorts.includes(trafficData.srcPort)) {
+            score += 0.2;
+            rules.push({ rule: 'Unusual port access', weight: 0.2 });
+        }
+
+        // Rule 3: High packet frequency
+        if (trafficData.flowPacketsPerSecond > 100) {
+            score += 0.2;
+            rules.push({ rule: 'High packet frequency', weight: 0.2 });
+        }
+
+        // Rule 4: Unusual protocol
+        const commonProtocols = [6, 17, 1];
+        if (!commonProtocols.includes(trafficData.protocol)) {
+            score += 0.15;
+            rules.push({ rule: 'Unusual protocol', weight: 0.15 });
+        }
+
+        // Rule 5: Suspicious payload patterns
+        const suspiciousPatterns = ['DROP', 'DELETE', 'EXEC', 'SHELL', 'CMD', 'EVAL'];
+        const payload = (trafficData.payload || '').toUpperCase();
+        suspiciousPatterns.forEach(pattern => {
+            if (payload.includes(pattern)) {
+                score += 0.1;
+                rules.push({ rule: `Suspicious pattern: ${pattern}`, weight: 0.1 });
+            }
+        });
+
+        const isAttack = score > 0.5;
+        const confidence = Math.min(score, 0.95);
+
+        return {
+            isAttack: isAttack,
+            confidence: confidence,
+            severity: this.getSeverity(score),
+            details: {
+                rules: rules,
+                score: score,
+                ruleCount: rules.length
+            }
+        };
+    }
+
+    /**
+     * Behavioral Detection Algorithm
+     * Analyzes behavioral patterns over time
+     */
+    behavioralDetection(trafficData) {
+        const behavior = {
+            connectionPattern: this.analyzeConnectionPattern(trafficData),
+            timePattern: this.analyzeTimePattern(trafficData),
+            spatialPattern: this.analyzeSpatialPattern(trafficData),
+            frequencyPattern: this.analyzeFrequencyPattern(trafficData)
+        };
+
+        // Calculate overall behavior score
+        const scores = Object.values(behavior).filter(s => typeof s === 'number');
+        const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+
+        const isAttack = avgScore > 0.6;
+
+        return {
+            isAttack: isAttack,
+            confidence: avgScore,
+            severity: this.getSeverity(avgScore),
+            details: {
+                behavior: behavior,
+                avgScore: avgScore,
+                components: behavior
+            }
+        };
+    }
+
+    /**
+     * Ensemble Detection Algorithm
+     * Combines multiple detection methods for better accuracy
+     */
+    ensembleDetection(trafficData) {
+        // Run all algorithms
+        const anomaly = this.anomalyDetection(trafficData);
+        const signature = this.signatureDetection(trafficData);
+        const heuristic = this.heuristicDetection(trafficData);
+        const behavioral = this.behavioralDetection(trafficData);
+
+        // Weighted voting
+        const weights = {
+            anomaly: 0.3,
+            signature: 0.4,
+            heuristic: 0.2,
+            behavioral: 0.1
+        };
+
+        const results = [
+            { ...anomaly, weight: weights.anomaly },
+            { ...signature, weight: weights.signature },
+            { ...heuristic, weight: weights.heuristic },
+            { ...behavioral, weight: weights.behavioral }
+        ];
+
+        // Calculate weighted confidence
+        let totalConfidence = 0;
+        let totalWeight = 0;
+        let attackVotes = 0;
+
+        results.forEach(result => {
+            if (result.isAttack) attackVotes++;
+            totalConfidence += result.confidence * result.weight;
+            totalWeight += result.weight;
+        });
+
+        const finalConfidence = totalWeight > 0 ? totalConfidence / totalWeight : 0;
+        const isAttack = attackVotes >= 2 || finalConfidence > 0.6;
+
+        return {
+            isAttack: isAttack,
+            confidence: finalConfidence,
+            severity: this.getSeverity(finalConfidence),
+            details: {
+                anomaly: anomaly,
+                signature: signature,
+                heuristic: heuristic,
+                behavioral: behavioral,
+                attackVotes: attackVotes,
+                weightedConfidence: finalConfidence,
+                ensembleSize: results.length
+            }
+        };
+    }
+
+    /**
+     * Helper: Calculate z-score
+     */
+    zScore(value, mean, std) {
+        if (std === 0) return 0;
+        const z = Math.abs((value - mean) / std);
+        return Math.min(z / 3, 1); // Normalize to 0-1
+    }
+
+    /**
+     * Helper: Calculate protocol anomaly score
+     */
+    protocolAnomalyScore(protocol, distribution) {
+        const protoMap = { 6: 'TCP', 17: 'UDP', 1: 'ICMP' };
+        const proto = protoMap[protocol] || 'OTHER';
+        const expected = distribution[proto] || 0.01;
+        return Math.min(Math.abs(expected - 0.1) / 0.1, 1);
+    }
+
+    /**
+     * Helper: Calculate port anomaly score
+     */
+    portAnomalyScore(port, distribution) {
+        const expected = distribution[port] || 0.01;
+        return Math.min(Math.abs(expected - 0.01) / 0.01, 1);
+    }
+
+    /**
+     * Helper: Analyze connection pattern
+     */
+    analyzeConnectionPattern(data) {
+        const patterns = {
+            'SYN flood': data.synCount > 100,
+            'Slow connections': data.connectionDuration > 10000,
+            'Multiple sources': data.uniqueSources > 10,
+            'Multiple destinations': data.uniqueDestinations > 10
+        };
+
+        const score = Object.values(patterns).filter(Boolean).length / Object.keys(patterns).length;
+        return score;
+    }
+
+    /**
+     * Helper: Analyze time pattern
+     */
+    analyzeTimePattern(data) {
+        // Check for unusual time patterns
+        const hour = new Date().getHours();
+        const isOffHours = hour < 6 || hour > 22;
+        const score = isOffHours ? 0.3 : 0.1;
+        return score;
+    }
+
+    /**
+     * Helper: Analyze spatial pattern
+     */
+    analyzeSpatialPattern(data) {
+        // Check for geographical anomalies
+        const distance = data.geoDistance || 0;
+        const score = Math.min(distance / 10000, 1);
+        return score;
+    }
+
+    /**
+     * Helper: Analyze frequency pattern
+     */
+    analyzeFrequencyPattern(data) {
+        const rate = data.flowPacketsPerSecond || 0;
+        const score = Math.min(rate / 100, 1);
+        return score;
+    }
+
+    /**
+     * Helper: Get severity level
+     */
+    getSeverity(score) {
+        if (score > 0.85) return 'critical';
+        if (score > 0.7) return 'high';
+        if (score > 0.5) return 'medium';
+        if (score > 0.3) return 'low';
+        return 'safe';
+    }
+
+    /**
+     * Run all algorithms and return comprehensive analysis
+     */
+    comprehensiveAnalysis(trafficData) {
+        const results = {
+            anomaly: this.anomalyDetection(trafficData),
+            signature: this.signatureDetection(trafficData),
+            heuristic: this.heuristicDetection(trafficData),
+            behavioral: this.behavioralDetection(trafficData),
+            ensemble: this.ensembleDetection(trafficData)
+        };
+
+        // Overall verdict
+        const ensembleResult = results.ensemble;
+        const allResults = Object.values(results).map(r => r.isAttack);
+        const attackCount = allResults.filter(Boolean).length;
+        const consensus = attackCount >= 3;
+
+        return {
+            consensus: consensus,
+            attackCount: attackCount,
+            totalAlgorithms: allResults.length,
+            finalVerdict: consensus ? 'INTRUSION_DETECTED' : 'NORMAL_TRAFFIC',
+            ensembleResult: ensembleResult,
+            individualResults: results,
+            timestamp: new Date().toISOString()
+        };
+    }
+}
+
+// Create singleton instance
+const detectionAlgorithms = new DetectionAlgorithms();
+
+// Export
+window.SentinelDetection = {
+    algorithms: detectionAlgorithms,
+    analyze: (data) => detectionAlgorithms.comprehensiveAnalysis(data),
+    detect: (data, method = 'ensemble') => {
+        const algo = detectionAlgorithms.algorithms[method];
+        return algo ? algo.call(detectionAlgorithms, data) : null;
+    }
+};

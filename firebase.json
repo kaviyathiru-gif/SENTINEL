@@ -102,4 +102,18 @@
     },
     "singleProjectMode": true
   }
+  {
+  "type": "service_account",
+  "project_id": "studied-indexer-464409-e1",
+  "private_key_id": "2bfaa8fdc2732d242d0a2fae08c2c1043fae9a2b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDPfOMwikbl2AII\nE8EohDiOaKe2B7vERFFghuyznbZHgLYAwbCF+6EfBtvVNZpHG58p4nFyzfWwQGJY\nMEEaKdu1+UnPtwELnoeX3bcy28fV9ozlh6s3Pq7XBn88YQt4ISP3r+oIvWyZ/CFg\nAfNemXgzo/ENANDhCKaYp7jFnxmiI5DxiPuFmcicbAy6i2XWEQSpbQAdNpSGY1b5\negJxkGdyeh1BBeGReGJncqu+EOyFOBAVvCKIYWl/fcMg/j6s25A2264pjksQzDHF\niDUXBX6aAESs5YmdimFx9dB5L687OhIxG61GO3JRb/fbeNeC78tfHAxqIVQ6UdJw\niiaHn4vtAgMBAAECggEAD57xY8glSkyW6pDCLBC4SVBrv/KZGk+iaMf/rg4jmQKB\nsVDjv1KQcMuNZWHhuZTEyNx5ehEzfA981/LaE+Qu3GZmPjMi6wMGZlKU5klRpDQp\nq2YpZ8FaXGnqzlroCCVGlfEyh3HraTRoNtguwGKBgDHJhhcXormKAVgvOwGdZm1w\nMUYiI2JOwTvU+uygQrSNInJPFSpxBejkeBsm6h5UPi3jvX8/IRl9w63OnFEDkizi\npK1ntvu2k1EGQfamWgZ/9ekDyqMow6/sJ3YCO14Qg/ESHElE8FczYBBPuqLcVzNM\nyMV7zaR/LDfi9pEu2W3wc+iM//UncxNiWEzNgcbN6QKBgQD9rPS+DySM4v8i3D5e\nynxXARbhMqJvUzNNH5cBi+2VMBH3m9UPDKMR8y2BuN6w2FuoZqvxBSTG69dpNkNf\nd/w+YLUNT+PC2J+NaaOe9GFMUyPAyIIZ4NPWkM4gykN72FvuuciEcvGrPdzy4rVB\n/X8YemDcUsnm5tfk1bLRGu+1awKBgQDRY5bdZZ/FjepcLvNPGJ0XjgH86Dd4GAEd\naWuC9VgxLq8GpmJ+3Mw90ZTYI7lY4GktmHBeHQ2md3H4N+M41B1f7Y1gOEE8oZGe\nRL5qRehhE57fjeBqXILhQQ32TSQU+n52r43dA9Y9Vj5IMOVW6pMoDrS0/m3EsDQE\nc1leAeRCBwKBgDbn/Z05l9aqt0BrXVCVES6fvL0HgaMI5hy2Tq/2Anl9CxaF8yqr\nuIwFD395bTHn0obzmhmz3E718w0BwrliNgWmVunHteuRiY9JIzIfgQPNJvruK0LA\np/lUJFlyjgK7RMK6EY2hd29yF2W27jaXULASpO5rOOoyYt5T5r1d0C57AoGALjs0\n5jE386B/7FaZdg9TMA40tih3htaV+G58RG/zRvitwGQgPy51EfkiSg6pL8xsrJqJ\nxN3ZU7XvvgRo8PU0fyeuHV6OWNq7khxPhptk0XpJi8aBlDpU03NPp+AkZVVhcscU\nJYZhWS2flsTk/inQz/lfQM8kYVceRRVK2AzG3yUCgYEAld4w5i84v6EnETwTrrjN\ndd0gQJZZxilW4CdLe/llDq7QHv+UUalfKZednoXpNR3jTKjIV5g+tFJ64E9tTudz\nJJ5EOuieFYcVaSPhC8t0yrMJMCcn5Jzjmn+c8j5z86tir1nZbYvLDVrzskFB8sKg\ntKMOiGtNh5m5OtCYdm/CuLk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@studied-indexer-464409-e1.iam.gserviceaccount.com",
+  "client_id": "113348648221365798920",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40studied-indexer-464409-e1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
 }

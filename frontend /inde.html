@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sentinel - Security Analytics & Threat Visualizer</title>
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --accent-color: #58a6ff;
+      --accent-alert: #f85149;
+      --text-color: #c9d1d9;
+      --border-color: #30363d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 { font-size: 1.25rem; color: #fff; }
+    header span { color: var(--accent-color); font-size: 0.85rem; }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 60px);
+    }
+
+    /* Left Control Panel */
+    .control-panel {
+      width: 400px;
+      padding: 1.5rem;
+      background-color: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #8b949e;
+    }
+
+    .input-group input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-color);
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    /* Drag & Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 2rem 1rem;
+      text-align: center;
+      background-color: var(--bg-color);
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--accent-color);
+      background-color: rgba(88, 166, 255, 0.05);
+    }
+
+    .drop-zone p {
+      font-size: 0.85rem;
+      color: #8b949e;
+    }
+
+    .drop-zone input[type="file"] { display: none; }
+
+    button.btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: none;
+      background-color: var(--accent-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    button.btn-submit:hover { opacity: 0.9; }
+
+    /* Right 3D Globe Viewer */
+    .viewport {
+      flex: 1;
+      position: relative;
+      background-color: #000;
+    }
+
+    #globe-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .status-card {
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background-color: rgba(22, 27, 34, 0.85);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+      border-radius: 8px;
+      width: 280px;
+    }
+
+    .status-card h4 { font-size: 0.9rem; margin-bottom: 0.5rem; color: #fff; }
+    .status-card p { font-size: 0.8rem; color: #8b949e; margin-bottom: 0.25rem; }
+  </style>
+  
+  <!-- Three.js for 3D Globe Rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>SENTINEL <span>// Visual Analytics Engine</span></h1>
+    <div>Status: <strong style="color: #3fb950;">Active Pipeline</strong></div>
+  </header>
+
+  <div class="main-container">
+    <!-- Left Form Controls -->
+    <div class="control-panel">
+      <div class="input-group">
+        <label for="domain-input">TARGET DOMAIN URL</label>
+        <input type="text" id="domain-input" placeholder="https://example.com" value="https://example.com" />
+      </div>
+
+      <div class="input-group">
+        <label>DOM SNAPSHOT UPLOAD</label>
+        <div class="drop-zone" id="drop-zone">
+          <p id="drop-text">Drag & drop DOM screenshot here<br>or <strong>click to browse</strong></p>
+          <input type="file" id="file-input" accept="image/*" />
+        </div>
+      </div>
+
+      <button class="btn-submit" id="submit-btn">Run Threat & Vision Analysis</button>
+
+      <div class="input-group">
+        <label>ANALYSIS RESULTS</label>
+        <div id="results-output" style="font-family: monospace; font-size: 0.8rem; color: #3fb950; background: var(--bg-color); padding: 0.75rem; border-radius: 6px; min-height: 120px; white-space: pre-wrap; word-break: break-all;">Awaiting payload run...</div>
+      </div>
+    </div>
+
+    <!-- Right 3D Rotating Globe Viewport -->
+    <div class="viewport">
+      <div id="globe-container"></div>
+      
+      <div class="status-card">
+        <h4>Global Threat Telemetry</h4>
+        <p>Telemetry Node: <strong>Active</strong></p>
+        <p>Rotation Speed: <strong>0.003 rad/s</strong></p>
+        <p>Target Sync: <span id="target-sync-status" style="color: var(--accent-color);">Idle</span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. Three.js 3D Rotating Earth Globe Setup ---
+    const container = document.getElementById('globe-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // Create Sphere Geometry
+    const geometry = new THREE.SphereGeometry(2, 64, 64);
+    
+    // Load Wireframe/Points Texture Material for Tech Aesthetic
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x58a6ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.6
+    });
+
+    const globe = new THREE.Mesh(geometry, material);
+    scene.add(globe);
+
+    // Ambient & Directional Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+    
+    const pointLight = new THREE.PointLight(0x58a6ff, 1.5);
+    pointLight.position.set(5, 3, 5);
+    scene.add(pointLight);
+
+    camera.position.z = 6;
+
+    // Render loop for continuous rotation
+    function animate() {
+      requestAnimationFrame(animate);
+      globe.rotation.y += 0.003;
+      globe.rotation.x += 0.0005;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // --- 2. Drag & Drop File Handling ---
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const dropText = document.getElementById('drop-text');
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        selectedFile = e.dataTransfer.files[0];
+        dropText.innerHTML = `Selected: <strong>${selectedFile.name}</strong>`;
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        selectedFile = fileInput.files[0];
+        dropText.innerHTML = `Selected: <strong>${selectedFile.name}</strong>`;
+      }
+    });
+
+    // --- 3. Send Payload to FastAPI Backend ---
+    const submitBtn = document.getElementById('submit-btn');
+    const domainInput = document.getElementById('domain-input');
+    const resultsOutput = document.getElementById('results-output');
+    const targetSyncStatus = document.getElementById('target-sync-status');
+
+    submitBtn.addEventListener('click', async () => {
+      const domainUrl = domainInput.value.trim();
+      if (!domainUrl) {
+        alert("Please specify a target domain URL.");
+        return;
+      }
+      if (!selectedFile) {
+        alert("Please upload or drag & drop a screenshot image first.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('domain_url', domainUrl);
+      formData.append('file', selectedFile);
+
+      resultsOutput.textContent = "Analyzing DOM snapshot via CV Engine...";
+      targetSyncStatus.textContent = "Processing...";
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/v1/analyze-snapshot', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        resultsOutput.textContent = JSON.stringify(data, null, 2);
+        targetSyncStatus.textContent = "Synced to Firebase";
+        targetSyncStatus.style.color = "#3fb950";
+      } catch (err) {
+        resultsOutput.textContent = "Error connecting to FastAPI backend:\n" + err.message;
+        targetSyncStatus.textContent = "Sync Failed";
+        targetSyncStatus.style.color = "#f85149";
+      }
+    });
+  </script>
+</body>
+</html>

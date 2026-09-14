@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+firebase-admin
+opencv-python-headless
+pillow
+numpy
+python-multipart
+requests

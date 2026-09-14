@@ -1,57 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sentinel 3D Globe Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- Three.js and OrbitControls via CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENTINEL</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Flash / Splash Screen -->
-  <div id="flash-screen">
-    <div class="splash-content">
-      <h1 class="glow-text">SENTINEL</h1>
-      <p>Loading Enterprise Systems...</p>
-      <div class="loader"></div>
-    </div>
-  </div>
 
-  <!-- Main Dashboard UI -->
-  <div id="dashboard" class="hidden">
-    <!-- Top Control Glass Panel -->
-    <header class="glass-panel top-bar">
-      <div class="brand">SENTINEL AI</div>
-      
-      <div class="input-group">
-        <input type="text" id="url-input" placeholder="Paste target URL here..." />
-        <button id="copy-btn" onclick="pasteURL()">Paste</button>
-        <button id="enter-btn">Analyze</button>
-      </div>
-
-      <div class="drag-drop-zone" id="drop-zone">
-        Drag & Drop Files / Datasets Here
-      </div>
+    <!-- Header Section -->
+    <header class="navbar">
+        <div class="brand">
+            <!-- Update "eye-icon.png" with your actual icon image filename/path -->
+            <img src="eye-icon.png" alt="Sentinel Eye Icon" class="brand-icon">
+            <span class="brand-title">SENTINEL</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Settings</a>
+        </nav>
     </header>
 
-    <!-- 3D Canvas Container -->
-    <div id="globe-container"></div>
+    <!-- Main Content Section -->
+    <main class="main-content">
+        <div class="globe-container">
+            <!-- Your 3D globe / canvas goes here -->
+            <div id="globe-placeholder"></div>
+        </div>
 
-    <!-- Bottom Navigation Glass Panel -->
-    <footer class="glass-panel bottom-bar">
-      <nav>
-        <a href="#privacy">Privacy Policy</a>
-        <a href="#terms">Terms of Service</a>
-        <a href="#settings">Settings</a>
-      </nav>
-      <div class="status-indicator">
-        <span class="dot"></span> System Operational
-      </div>
+        <div class="control-panel">
+            <p class="instruction-text">Please select a target</p>
+            <div class="button-group">
+                <button class="btn">Focus</button>
+                <button class="btn btn-primary">Analyze</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-hint">
+        <p>Drag & Drop files | Move mouse to orbit</p>
     </footer>
-  </div>
 
-  <script src="script.js"></script>
 </body>
 </html>

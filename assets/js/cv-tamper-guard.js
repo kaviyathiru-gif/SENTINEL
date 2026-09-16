@@ -1,6 +1,6 @@
 /**
  * SENTINEL - Computer Vision & DOM Spatial Tamper Protection Engine
- * Monitors visual UI coordinates, detects layout tampering/dragging,
+ * Monitors visual UI coordinates, detects layout tampering/dragging
  * and automatically rectifies manipulated DOM elements.
  */
 

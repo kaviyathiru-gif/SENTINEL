@@ -18,28 +18,18 @@
     "name": "SENTINEL AI Defense System",
     "address": "no-reply@sentinel-secops.org"
   },
-  "recipients": {
-    "primary_admin_gmail": "admin.soc@google-pixel.org",
-    "secondary_soc_lead": "soc.lead@google-pixel.org",
-    "duty_desk_broadcast": "duty.desk@google-pixel.org"
-  },
   "automation_rules": {
     "dispatch_on_critical_attack": true,
-    "dispatch_on_call_failover": true,
-    "dispatch_scheduled_summaries": true,
-    "summary_schedule_cron": "0 0 * * *",
-    "attach_pdf_receipt": true
+    "dispatch_daily_report": true,
+    "dispatch_weekly_report": true,
+    "dispatch_monthly_report": true,
+    "dispatch_yearly_report": true,
+    "cron_schedule": "0 0 * * *"
   },
   "email_templates": {
-    "incident_receipt": {
-      "subject": "[SENTINEL CRITICAL ALERT] Incident Receipt & Auto-Rectification Report - {{ATTACK_TYPE}}",
-      "body_text": "SENTINEL AI DEFENSE REPORT\nTimestamp: {{TIMESTAMP}}\nTarget Domain: {{TARGET_DOMAIN}}\nAttack Vector: {{ATTACK_TYPE}}\nOrigin IP: {{SOURCE_IP}} ({{ORIGIN_LOCATION}})\nStatus: {{STATUS}}\nMitigation: {{MITIGATION_ACTION}}\n\nThis is an automated security receipt dispatched by Sentinel SecOps Engine.",
-      "body_html": "<!DOCTYPE html><html><head><style>body{font-family:'Courier New',monospace;background-color:#0a0814;color:#e2e8f0;padding:20px;}.card{background-color:#141026;border:1px solid #9333ea;border-radius:12px;padding:20px;max-width:600px;margin:auto;}.header{color:#06b6d4;font-size:20px;font-weight:bold;margin-bottom:10px;}.badge{background-color:#ef4444;color:#ffffff;padding:4px 8px;border-radius:4px;font-size:12px;}.field{margin-bottom:8px;font-size:14px;}.label{color:#c084fc;}.footer{margin-top:20px;font-size:11px;color:#64748b;border-top:1px solid #2a224a;padding-top:10px;}</style></head><body><div class='card'><div class='header'>SENTINEL AI INCIDENT RECEIPT</div><div class='field'><span class='label'>Timestamp:</span> {{TIMESTAMP}}</div><div class='field'><span class='label'>Status:</span> <span class='badge'>{{STATUS}}</span></div><div class='field'><span class='label'>Target Domain:</span> {{TARGET_DOMAIN}}</div><div class='field'><span class='label'>Attack Type:</span> {{ATTACK_TYPE}}</div><div class='field'><span class='label'>Source IP:</span> {{SOURCE_IP}} ({{ORIGIN_LOCATION}})</div><div class='field'><span class='label'>Auto Mitigation:</span> {{MITIGATION_ACTION}}</div><div class='footer'>Automated Security Incident Report dispatched directly to Admin Gmail. Replies to this address are not monitored.</div></div></body></html>"
-    },
     "periodic_comparison_summary": {
-      "subject": "[SENTINEL SEC-OPS] Daily, Weekly & Monthly Threat Comparison Metrics",
-      "body_text": "SENTINEL THREAT SUMMARY COMPARISON\n\nDaily Attacks Blocked: {{DAILY_COUNT}} ({{DAILY_CHANGE_PCT}}% vs yesterday)\nWeekly Attacks Neutralized: {{WEEKLY_COUNT}}\nMonthly System Uptime: {{MONTHLY_UPTIME}}%\nTop Attacked Target Domain: {{TOP_TARGET_DOMAIN}}\nTop Threat Vector: {{TOP_THREAT_VECTOR}}\n\nFull Power BI metric breakdown attached in report.",
-      "body_html": "<!DOCTYPE html><html><head><style>body{font-family:'Segoe UI',sans-serif;background-color:#0a0814;color:#e2e8f0;padding:20px;}.card{background-color:#141026;border:1px solid #06b6d4;border-radius:12px;padding:24px;max-width:650px;margin:auto;}.title{color:#9333ea;font-size:22px;font-weight:bold;}.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0;}.stat-box{background:#0a0814;border:1px solid #2a224a;padding:12px;border-radius:8px;text-align:center;}.stat-num{font-size:20px;color:#06b6d4;font-weight:bold;}</style></head><body><div class='card'><div class='title'>SENTINEL SECURITY SUMMARY</div><p style='color:#94a3b8;font-size:13px;'>Automated Daily, Weekly & Monthly Comparison Analytics</p><div class='stat-grid'><div class='stat-box'><div style='font-size:11px;color:#c084fc;'>DAILY ATTACKS</div><div class='stat-num'>{{DAILY_COUNT}}</div></div><div class='stat-box'><div style='font-size:11px;color:#c084fc;'>WEEKLY TOTAL</div><div class='stat-num'>{{WEEKLY_COUNT}}</div></div><div class='stat-box'><div style='font-size:11px;color:#c084fc;'>UPTIME</div><div class='stat-num'>{{MONTHLY_UPTIME}}%</div></div></div><p style='font-size:13px;color:#e2e8f0;'>Top Attacked Domain: <strong style='color:#ec4899;'>{{TOP_TARGET_DOMAIN}}</strong></p><p style='font-size:13px;color:#e2e8f0;'>Primary Threat Vector: <strong style='color:#06b6d4;'>{{TOP_THREAT_VECTOR}}</strong></p></div></body></html>"
+      "subject": "[SENTINEL SEC-OPS] Periodic Security Report (Daily, Weekly, Monthly, Yearly)",
+      "body_html": "<div style='background-color:#0a0814; color:#e2e8f0; padding:24px; font-family:sans-serif; border:1px solid #06b6d4; border-radius:12px;'><h2 style='color:#9333ea; margin-top:0;'>SENTINEL THREAT COMPARISON MATRIX</h2><p style='color:#94a3b8; font-size:13px;'>Automated Multi-Period Security Analysis</p><div style='display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;'><div style='background:#141026; padding:12px; border-radius:8px; text-align:center;'><div style='font-size:10px; color:#c084fc;'>DAILY</div><div style='font-size:18px; color:#06b6d4; font-weight:bold;'>{{DAILY_COUNT}}</div></div><div style='background:#141026; padding:12px; border-radius:8px; text-align:center;'><div style='font-size:10px; color:#c084fc;'>WEEKLY</div><div style='font-size:18px; color:#06b6d4; font-weight:bold;'>{{WEEKLY_COUNT}}</div></div><div style='background:#141026; padding:12px; border-radius:8px; text-align:center;'><div style='font-size:10px; color:#c084fc;'>MONTHLY</div><div style='font-size:18px; color:#06b6d4; font-weight:bold;'>{{MONTHLY_COUNT}}</div></div><div style='background:#141026; padding:12px; border-radius:8px; text-align:center;'><div style='font-size:10px; color:#c084fc;'>YEARLY</div><div style='font-size:18px; color:#06b6d4; font-weight:bold;'>{{YEARLY_COUNT}}</div></div></div><p style='font-size:13px;'>System Uptime: <strong style='color:#10b981;'>{{UPTIME}}%</strong></p></div></div>"
     }
   }
 }

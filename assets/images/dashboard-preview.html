@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sentinel Dashboard Preview Generator</title>
+  <style>
+    body {
+      background: #06040a;
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      gap: 20px;
+    }
+    canvas {
+      width: 600px;
+      height: 337.5px;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(147, 51, 234, 0.3);
+      border: 1px solid rgba(42, 34, 74, 0.8);
+    }
+    .btn {
+      background: linear-gradient(135deg, #9333ea, #06b6d4);
+      color: white;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- High-Resolution Canvas for 1080p Screenshot Preview (1920x1080) -->
+  <canvas id="previewCanvas" width="1920" height="1080"></canvas>
+  <button class="btn" onclick="downloadPreviewPng()">Download dashboard-preview.png</button>
+
+  <script>
+    function renderDashboardPreview() {
+      const canvas = document.getElementById('previewCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // 1. Base Dark Cyber Background
+      ctx.fillStyle = '#0a0814';
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Sidebar Navigation Panel
+      ctx.fillStyle = '#0d091d';
+      ctx.fillRect(0, 0, 320, h);
+      ctx.strokeStyle = '#2a224a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(320, 0); ctx.lineTo(320, h);
+      ctx.stroke();
+
+      // Sidebar Brand Header
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 24px monospace';
+      ctx.fillText('SENTINEL', 80, 50);
+      ctx.fillStyle = '#9333ea';
+      ctx.font = '12px monospace';
+      ctx.fillText('10-DOMAIN DEFENSE', 80, 70);
+
+      // Sidebar Nav Buttons
+      const navItems = ['3D Threat Globe', '13 Power BI Panels', 'CV & Deepfake Engine', 'Settings & Gmail API'];
+      navItems.forEach((item, index) => {
+        const y = 130 + index * 60;
+        if (index === 0) {
+          ctx.fillStyle = 'rgba(147, 51, 234, 0.3)';
+          ctx.strokeStyle = '#9333ea';
+          ctx.roundRect(20, y, 280, 48, 10);
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#c084fc';
+        } else {
+          ctx.fillStyle = '#94a3b8';
+        }
+        ctx.font = '16px sans-serif';
+        ctx.fillText(item, 60, y + 30);
+      });
+
+      // 3. Header Bar
+      ctx.fillStyle = '#0f0c21';
+      ctx.fillRect(320, 0, w - 320, 80);
+      ctx.beginPath();
+      ctx.moveTo(320, 80); ctx.lineTo(w, 80);
+      ctx.stroke();
+
+      ctx.fillStyle = '#9333ea';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText('SENTINEL | ', 350, 45);
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillText('Confidential AI Network Security Status', 460, 45);
+
+      // Header Simulate Attack Button
+      ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
+      ctx.strokeStyle = '#ec4899';
+      ctx.roundRect(w - 220, 20, 180, 40, 10);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#f472b6';
+      ctx.font = 'bold 14px monospace';
+      ctx.fillText('Simulate Attack', w - 185, 45);
+
+      // 4. Main Viewport Cards (Globe + Satellite)
+      // Globe Card Container
+      ctx.fillStyle = '#141026';
+      ctx.strokeStyle = '#2a224a';
+      ctx.roundRect(350, 110, 1050, 520, 16);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText('3D AR GLOBE THREAT TELEMETRY & GIS SATELLITE ENGINE', 380, 150);
+
+      // Render 3D Globe Mock Element inside Card
+      const gx = 875, gy = 380, gr = 180;
+      ctx.strokeStyle = 'rgba(147, 51, 234, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Latitude / Longitude Wireframe Grids
+      for (let i = -2; i <= 2; i++) {
+        ctx.beginPath();
+        ctx.ellipse(gx, gy, gr, gr * Math.cos(i * 0.4), 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Attack Trajectory Arc
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 4;
+      ctx.shadowColor = '#06b6d4';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.moveTo(750, 320);
+      ctx.quadraticCurveTo(875, 200, 1000, 380);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Satellite Coordinates Card
+      ctx.fillStyle = '#141026';
+      ctx.strokeStyle = '#2a224a';
+      ctx.roundRect(1430, 110, 450, 520, 16);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#ec4899';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText('Attacker Satellite Coordinates', 1450, 150);
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '14px monospace';
+      ctx.fillText('Origin: Frankfurt, Germany', 1450, 190);
+      ctx.fillText('IP: 185.220.101.4', 1450, 215);
+
+      // Satellite Imagery Grid Placeholder
+      ctx.fillStyle = '#06040a';
+      ctx.roundRect(1450, 240, 410, 360, 12);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.5)';
+      ctx.stroke();
+
+      // 5. Bottom 13-Power BI Panels Summary Bar
+      ctx.fillStyle = '#141026';
+      ctx.strokeStyle = '#2a224a';
+      ctx.roundRect(350, 660, 1530, 380, 16);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText('13 POWER BI REAL-TIME ANALYTICS PANELS SUMMARY', 380, 700);
+
+      // Mock Charts Preview Rows
+      for (let i = 0; i < 4; i++) {
+        const cx = 380 + i * 365;
+        ctx.fillStyle = '#0a0814';
+        ctx.roundRect(cx, 730, 340, 280, 12);
+        ctx.fill();
+        ctx.strokeStyle = '#2a224a';
+        ctx.stroke();
+
+        // Waveform preview line inside panels
+        ctx.strokeStyle = i % 2 === 0 ? '#9333ea' : '#06b6d4';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cx + 20, 880);
+        ctx.lineTo(cx + 90, 820);
+        ctx.lineTo(cx + 170, 930);
+        ctx.lineTo(cx + 250, 800);
+        ctx.lineTo(cx + 320, 870);
+        ctx.stroke();
+      }
+    }
+
+    function downloadPreviewPng() {
+      const canvas = document.getElementById('previewCanvas');
+      const link = document.createElement('a');
+      link.download = 'dashboard-preview.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    window.onload = renderDashboardPreview;
+  </script>
+
+</body>
+</html>

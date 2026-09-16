@@ -1,0 +1,74 @@
+<!-- SENTINEL: WebXR AR Scanning HUD Overlay Module -->
+<div id="arHudOverlay" class="hidden absolute inset-0 pointer-events-none z-30 overflow-hidden select-none">
+  
+  <!-- 1. Spatial Grid Mesh Overlay -->
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.08)_0%,transparent_75%)] border-2 border-cyan-500/20 rounded-2xl m-3">
+    <div class="w-full h-full bg-[linear-gradient(to_right,rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+  </div>
+
+  <!-- 2. Animated Central Target Scanning Reticle -->
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="relative w-72 h-72 flex items-center justify-center">
+      <!-- Outer Rotating Segmented Ring -->
+      <div class="absolute inset-0 border-2 border-dashed border-cyan-400/40 rounded-full animate-[spin_12s_linear_infinite]"></div>
+      <div class="absolute inset-2 border border-purple-500/30 rounded-full animate-[spin_8s_linear_infinite_reverse]"></div>
+      
+      <!-- Crosshair Tick Marks -->
+      <div class="absolute w-full h-[1px] bg-cyan-500/30"></div>
+      <div class="absolute h-full w-[1px] bg-cyan-500/30"></div>
+      
+      <!-- Center Lock Box -->
+      <div class="w-16 h-16 border-2 border-cyan-400 bg-cyan-500/10 rounded flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+        <div class="w-2 h-2 bg-pink-500 rounded-full animate-ping"></div>
+      </div>
+
+      <!-- Target Reticle Corner Brackets -->
+      <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
+      <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan-400"></div>
+      <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-400"></div>
+      <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+    </div>
+  </div>
+
+  <!-- 3. Top-Left Telemetry Readout Box -->
+  <div class="absolute top-6 left-6 bg-slate-950/80 border border-cyan-500/40 backdrop-blur-md p-3.5 rounded-xl font-mono text-[11px] text-cyan-300 space-y-1.5 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+    <div class="flex items-center justify-between border-b border-cyan-500/30 pb-1 text-white font-bold">
+      <span class="flex items-center"><i class="fa-solid fa-crosshairs mr-1.5 text-cyan-400"></i> SPATIAL LOCK</span>
+      <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 animate-pulse">LIVE AR TRACKING</span>
+    </div>
+    <div class="flex justify-between space-x-4">
+      <span class="text-slate-400">LAT / LNG:</span>
+      <span class="text-white font-bold" id="arLatValue">50.1109° N, 8.6821° E</span>
+    </div>
+    <div class="flex justify-between space-x-4">
+      <span class="text-slate-400">VECTOR RADIUS:</span>
+      <span class="text-purple-400 font-bold">60.5m WebXR Matrix</span>
+    </div>
+    <div class="flex justify-between space-x-4">
+      <span class="text-slate-400">DEPTH SENSOR:</span>
+      <span class="text-emerald-400 font-bold">OPTIMAL (0.02ms)</span>
+    </div>
+  </div>
+
+  <!-- 4. Top-Right Live Threat Vector Badge -->
+  <div class="absolute top-6 right-6 bg-slate-950/80 border border-purple-500/40 backdrop-blur-md p-3.5 rounded-xl font-mono text-[11px] text-purple-300 space-y-1.5 shadow-[0_0_20px_rgba(147,51,234,0.2)]">
+    <div class="flex items-center space-x-2 text-rose-400 font-bold border-b border-purple-500/30 pb-1">
+      <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
+      <span>CRITICAL VECTOR DETECTED</span>
+    </div>
+    <div class="text-white font-bold text-xs" id="arThreatVectorText">Ransomware Payload Injection</div>
+    <div class="text-[10px] text-slate-400">TARGET: <span class="text-cyan-300">https://my-pixel-portal.org</span></div>
+  </div>
+
+  <!-- 5. Bottom Scanning Progress Bar -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-96 bg-slate-950/90 border border-cyan-500/40 backdrop-blur-md p-3 rounded-xl font-mono text-center space-y-2">
+    <div class="flex items-center justify-between text-[11px] text-cyan-300">
+      <span>QUANTUM AR MATRIX SCAN</span>
+      <span class="text-emerald-400 font-bold">99.4% VERIFIED</span>
+    </div>
+    <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-cyan-500/30">
+      <div class="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 h-full w-[99.4%] shadow-[0_0_10px_#06b6d4]"></div>
+    </div>
+  </div>
+
+</div>

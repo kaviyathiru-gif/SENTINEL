@@ -73,6 +73,21 @@
 
     // 5. Setup Interaction Listeners
     setupEventListeners(container);
+    // BEFORE (Broken / Causes 404 inside viewport):
+  container.addEventListener('click', (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+    const y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(x, y), SentinelGlobe.camera);
+
+    const intersects = raycaster.intersectObjects(SentinelGlobe.nodes);
+    if (intersects.length > 0) {
+    const hitData = intersects[0].object.userData;
+    syncGoogleSatelliteMap(hitData);
+  }
+});
 
     // 6. Start Render Loop
     animate();

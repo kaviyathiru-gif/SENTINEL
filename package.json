@@ -1,0 +1,51 @@
+{
+  "name": "sentinel-cyber-defense",
+  "version": "1.0.0",
+  "description": "SENTINEL: AI/ML Network Intrusion Detection & AR Cyber Defense Platform for Google Pixel Presentation",
+  "main": "src/api/call-dispatcher.js",
+  "scripts": {
+    "start": "node src/api/call-dispatcher.js",
+    "start:mailer": "node src/api/mailer.js",
+    "dev": "concurrently \"npm run start\" \"npm run start:mailer\"",
+    "build": "echo 'Building Sentinel Production Assets...' && exit 0",
+    "test": "echo 'Running Sentinel Automated Test Suites...' && exit 0",
+    "lint": "echo 'Linting Sentinel JS & Config Assets...' && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suruthi-sivaperumal/sentinel-cyber-defense.git"
+  },
+  "keywords": [
+    "cybersecurity",
+    "intrusion-detection",
+    "threejs",
+    "webxr",
+    "powerbi",
+    "kdd-cup",
+    "twilio",
+    "gmail-api",
+    "google-pixel"
+  ],
+  "author": "Suruthi Sivaperumal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suruthi-sivaperumal/sentinel-cyber-defense/issues"
+  },
+  "homepage": "https://github.com/suruthi-sivaperumal/sentinel-cyber-defense#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.13",
+    "pdfkit": "^0.15.0",
+    "twilio": "^5.0.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

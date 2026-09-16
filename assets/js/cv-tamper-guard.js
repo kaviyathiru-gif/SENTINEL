@@ -19,7 +19,7 @@
      */
     init() {
       window.addEventListener('load', () => {
-        // Track critical UI elements (e.g., Settings Nav Button)
+        // Track critical UI elements (e.g., Navigation & Action Icons)
         this.registerElement('nav-settings', { name: 'Settings Nav Icon' });
         this.registerElement('nav-home', { name: 'Home Nav Icon' });
         this.registerElement('nav-analytics', { name: 'Analytics Nav Icon' });
@@ -109,8 +109,8 @@
       this.updateUIStatus(data.name, reason);
 
       // 4. Trigger system emergency call alert if shift is severe
-      if (window.triggerSimulatedAttackAlert) {
-        window.triggerSimulatedAttackAlert(`CV Tamper Attack on ${data.name}`);
+      if (window.promptUserPhoneAndCall) {
+        window.promptUserPhoneAndCall();
       }
     }
 

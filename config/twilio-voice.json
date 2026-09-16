@@ -1,0 +1,49 @@
+{
+  "twilio_account": {
+    "account_sid_env_var": "TWILIO_ACCOUNT_SID",
+    "auth_token_env_var": "TWILIO_AUTH_TOKEN",
+    "dispatch_phone_number": "+18005550199"
+  },
+  "escalation_policy": {
+    "ring_timeout_seconds": 10,
+    "max_retry_attempts": 2,
+    "auto_escalate_on_no_answer": true,
+    "auto_escalate_on_busy": true,
+    "priority_routing_queue": [
+      {
+        "priority": 1,
+        "role": "Primary SOC Admin",
+        "name": "Admin J. Dee",
+        "phone_number": "+18005550199",
+        "email": "admin.soc@google-pixel.org"
+      },
+      {
+        "priority": 2,
+        "role": "Secondary SOC Lead",
+        "name": "S. Smith",
+        "phone_number": "+18005550288",
+        "email": "soc.lead@google-pixel.org"
+      },
+      {
+        "priority": 3,
+        "role": "Global SOC Duty Desk",
+        "name": "On-Call Broadcast Desk",
+        "phone_number": "+18005559900",
+        "email": "duty.desk@google-pixel.org"
+      }
+    ]
+  },
+  "voice_synthesis_settings": {
+    "voice": "Polly.Joanna-Neural",
+    "language": "en-US",
+    "speech_rate": "100%"
+  },
+  "call_scripts": {
+    "critical_breach_alert": "<Response><Say voice='Polly.Joanna-Neural'>Warning! Critical security breach detected by Sentinel Neural Engine. Attack type: {{ATTACK_TYPE}} targeting domain {{TARGET_DOMAIN}}. Originating IP address is {{SOURCE_IP}}. Automated countermeasures are active. Press 1 to acknowledge incident receipt and lock threat down, or press 2 to dispatch emergency failover.</Say><Gather action='/api/twilio/voice-response' numDigits='1' timeout='5'></Gather></Response>",
+    "escalation_failover_notice": "<Response><Say voice='Polly.Joanna-Neural'>Alert! Priority 1 administrator did not respond. Incident {{INCIDENT_ID}} has been automatically escalated to Priority {{CURRENT_PRIORITY}} SOC Lead. Immediate action required.</Say></Response>"
+  },
+  "webhooks": {
+    "status_callback_url": "https://sentinel-secops.org/api/twilio/status-callback",
+    "status_callback_events": ["initiated", "ringing", "answered", "completed"]
+  }
+}

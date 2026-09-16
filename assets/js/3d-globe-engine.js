@@ -379,3 +379,20 @@
   window.addEventListener('load', initEngine);
 
 })();
+/**
+ * Corrected Telemetry & GIS Sync Function
+ */
+function syncGoogleSatelliteMap(data) {
+  const frame = document.getElementById('googleSatMapFrame');
+  const cityText = document.getElementById('mapCityText');
+  const ipText = document.getElementById('mapIpText');
+  const vectorText = document.getElementById('mapVectorText');
+
+  // Use standard embed parameter formatting to avoid 404/refusal errors
+  if (frame) {
+    frame.src = `https://maps.google.com/maps?q=${data.lat},${data.lng}&t=k&z=13&ie=UTF8&iwloc=&output=embed`;
+  }
+  if (cityText) cityText.innerText = data.name;
+  if (ipText) ipText.innerText = data.ip;
+  if (vectorText) vectorText.innerText = data.vector;
+}

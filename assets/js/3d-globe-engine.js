@@ -382,13 +382,17 @@
 /**
  * Corrected Telemetry & GIS Sync Function
  */
+/**
+ * Corrected Telemetry & GIS Sync Function
+ * Ensures globe clicks only update the satellite preview on the right panel
+ */
 function syncGoogleSatelliteMap(data) {
   const frame = document.getElementById('googleSatMapFrame');
   const cityText = document.getElementById('mapCityText');
   const ipText = document.getElementById('mapIpText');
   const vectorText = document.getElementById('mapVectorText');
 
-  // Use standard embed parameter formatting to avoid 404/refusal errors
+  // Load only embeddable Google Satellite parameters
   if (frame) {
     frame.src = `https://maps.google.com/maps?q=${data.lat},${data.lng}&t=k&z=13&ie=UTF8&iwloc=&output=embed`;
   }

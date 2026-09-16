@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sentinel System Architecture Generator</title>
+  <style>
+    body {
+      background: #06040a;
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      gap: 20px;
+    }
+    canvas {
+      width: 700px;
+      height: 393.75px;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.3);
+      border: 1px solid rgba(42, 34, 74, 0.8);
+    }
+    .btn {
+      background: linear-gradient(135deg, #9333ea, #06b6d4);
+      color: white;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- High-Resolution Canvas for 4K System Architecture Diagram (3840x2160) -->
+  <canvas id="archCanvas" width="3840" height="2160"></canvas>
+  <button class="btn" onclick="downloadArchPng()">Download SYSTEM_ARCHITECTURE.png</button>
+
+  <script>
+    function renderSystemArchitecture() {
+      const canvas = document.getElementById('archCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // 1. Dark Cyber Background
+      ctx.fillStyle = '#0a0814';
+      ctx.fillRect(0, 0, w, h);
+
+      // Grid Pattern Overlay
+      ctx.strokeStyle = 'rgba(42, 34, 74, 0.25)';
+      ctx.lineWidth = 2;
+      for (let x = 0; x <= w; x += 100) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y <= h; y += 100) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Title Header
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 44px "Fira Code", monospace';
+      ctx.fillText('SENTINEL: AI/ML MULTI-DOMAIN SYSTEM ARCHITECTURE', 120, 120);
+      ctx.fillStyle = '#9333ea';
+      ctx.font = 'bold 24px "Fira Code", monospace';
+      ctx.fillText('END-TO-END TELEMETRY, CV TAMPER GUARD & AUTOMATED EMERGENCY DISPATCH FLOW', 120, 160);
+
+      // Helper for Nodes
+      function drawNode(x, y, width, height, title, subtitle, borderColor, glowColor) {
+        ctx.save();
+        ctx.shadowColor = glowColor;
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = '#141026';
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 3;
+        ctx.roundRect(x, y, width, height, 16);
+        ctx.fill(); ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px "Fira Code", monospace';
+        ctx.fillText(title, x + 24, y + 45);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '16px sans-serif';
+        ctx.fillText(subtitle, x + 24, y + 78);
+      }
+
+      // Helper for Connecting Arrows
+      function drawArrow(fromX, fromY, toX, toY, label, color) {
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 4;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 10;
+
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+
+        // Arrowhead
+        const angle = Math.atan2(toY - fromY, toX - fromX);
+        const headlen = 16;
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.closePath();
+        ctx.fill();
+
+        // Label
+        if (label) {
+          ctx.fillStyle = '#e2e8f0';
+          ctx.font = 'bold 15px "Fira Code", monospace';
+          ctx.fillText(label, (fromX + toX) / 2 - 40, (fromY + toY) / 2 - 12);
+        }
+        ctx.restore();
+      }
+
+      // Column 1: Ingestion & Web App Entry
+      drawNode(120, 300, 520, 120, '10 MONITORED DOMAINS', 'Multi-Domain Slot Ingestion Manager', '#06b6d4', '#06b6d4');
+      drawNode(120, 500, 520, 120, 'COMPUTER VISION GUARD', 'DOM Coordinate & Spatial Tracker', '#06b6d4', '#06b6d4');
+      drawNode(120, 700, 520, 120, 'BROWSER EXTENSION / HOOKS', 'Cross-Site Payload Packet Listener', '#06b6d4', '#06b6d4');
+
+      // Column 2: Deep Learning Neural Engine
+      drawNode(800, 400, 600, 160, 'LSTM & DNN THREAT ENGINE', 'KDD-Cup Trained Neural Network (99.4% Precision)', '#9333ea', '#9333ea');
+      drawNode(800, 640, 600, 160, 'SPATIAL RECTIFIER MODULE', 'Auto-Snaps Tampered Elements & Layout Shifts', '#9333ea', '#9333ea');
+
+      // Column 3: 3D Visualization & Analytics Layer
+      drawNode(1560, 300, 620, 140, '3D AR GLOBE ENGINE', 'Three.js 8D Quantum Matrix & Ballistic Arcs', '#ec4899', '#ec4899');
+      drawNode(1560, 500, 620, 140, 'GOOGLE SATELLITE GIS LINK', 'Attacker Lat/Lng Coordinate Map Zoom', '#ec4899', '#ec4899');
+      drawNode(1560, 700, 620, 140, '13 POWER BI PANELS', 'Chart.js Telemetry & Metric Visualizers', '#ec4899', '#ec4899');
+
+      // Column 4: Automated Dispatch & Escalation
+      drawNode(2340, 400, 620, 160, 'TWILIO VOICE DISPATCHER', 'Automated Escalation Calls (P1 -> P2 -> P3)', '#10b981', '#10b981');
+      drawNode(2340, 640, 620, 160, 'GMAIL AUTOMATED MAILER', 'HTML Receipts & Daily/Weekly Summaries', '#10b981', '#10b981');
+
+      // Inter-Node Workflow Connections
+      drawArrow(640, 360, 800, 450, 'Packets', '#06b6d4');
+      drawArrow(640, 560, 800, 680, 'DOM Shifts', '#06b6d4');
+      drawArrow(640, 760, 800, 520, 'Attacks', '#06b6d4');
+
+      drawArrow(1400, 480, 1560, 370, 'Arcs', '#9333ea');
+      drawArrow(1400, 480, 1560, 570, 'Coords', '#9333ea');
+      drawArrow(1400, 480, 1560, 770, 'Metrics', '#9333ea');
+
+      drawArrow(2180, 370, 2340, 480, 'Critical Trigger', '#ec4899');
+      drawArrow(2180, 570, 2340, 720, 'Dispatch Log', '#ec4899');
+    }
+
+    function downloadArchPng() {
+      const canvas = document.getElementById('archCanvas');
+      const link = document.createElement('a');
+      link.download = 'SYSTEM_ARCHITECTURE.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    window.onload = renderSystemArchitecture;
+  </script>
+
+</body>
+</html>

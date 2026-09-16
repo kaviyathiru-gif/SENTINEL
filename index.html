@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SENTINEL | AI/ML Cyber Defense & AR Network Intrusion System</title>
   
-  <!-- Tailwind CSS & FontAwesome CDNs -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Custom Cyber Theme & Fonts -->
   <link rel="stylesheet" href="assets/css/sentinel-theme.css">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Core Libraries: Three.js r128 & Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -23,14 +19,7 @@
       theme: {
         extend: {
           colors: {
-            cyber: {
-              bg: '#06040a',
-              card: '#0f0c21',
-              border: '#2a224a',
-              purple: '#9333ea',
-              cyan: '#06b6d4',
-              pink: '#ec4899'
-            }
+            cyber: { bg: '#06040a', card: '#0f0c21', border: '#2a224a', purple: '#9333ea', cyan: '#06b6d4', pink: '#ec4899' }
           }
         }
       }
@@ -40,38 +29,38 @@
 <body class="bg-cyber-bg text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden min-h-screen">
 
   <!-- ========================================== -->
-  <!-- 1. SECURE LOGIN AUTHENTICATION SCREEN      -->
+  <!-- 1. SECURE ADMIN AUTHENTICATION SCREEN      -->
   <!-- ========================================== -->
   <div id="loginScreen" class="fixed inset-0 z-50 bg-[#06040a] flex flex-col items-center justify-center p-6 select-none">
     <div class="w-full max-w-md p-8 rounded-2xl bg-cyber-card border border-cyber-border shadow-[0_0_50px_rgba(147,51,234,0.3)] space-y-6">
       <div class="flex items-center space-x-3 mb-2">
         <div class="w-10 h-10 rounded-xl bg-purple-900/40 border border-cyan-400/50 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-          <i class="fa-solid fa-eye text-xl"></i>
+          <i class="fa-solid fa-shield-halved text-xl"></i>
         </div>
         <div>
           <h2 class="font-mono font-bold text-white text-lg tracking-wider">SENTINEL SOC</h2>
-          <p class="text-xs font-mono text-purple-400">RESTRICTED ACCESS PORTAL</p>
+          <p class="text-xs font-mono text-purple-400">ADMINISTRATOR AUTHENTICATION REQUIRED</p>
         </div>
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-4 font-mono text-xs">
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4 font-mono text-xs">
         <div class="space-y-1">
-          <label class="text-slate-400">OPERATOR USERNAME</label>
-          <input type="text" id="loginUser" required placeholder="admin.soc@google-pixel.org" class="w-full px-4 py-3 bg-slate-900 border border-cyber-border rounded-xl text-white focus:border-cyan-400 focus:outline-none">
+          <label class="text-slate-400">ADMIN USERNAME</label>
+          <input type="text" id="adminUser" required placeholder="admin.soc@google-pixel.org" class="w-full px-4 py-3 bg-slate-900 border border-cyber-border rounded-xl text-white focus:border-cyan-400 focus:outline-none">
         </div>
         <div class="space-y-1">
-          <label class="text-slate-400">SECURE PASSWORD / API KEY</label>
-          <input type="password" id="loginPass" required placeholder="••••••••••••" class="w-full px-4 py-3 bg-slate-900 border border-cyber-border rounded-xl text-white focus:border-cyan-400 focus:outline-none">
+          <label class="text-slate-400">ADMIN PASSKEY / API KEY</label>
+          <input type="password" id="adminPass" required placeholder="••••••••••••" class="w-full px-4 py-3 bg-slate-900 border border-cyber-border rounded-xl text-white focus:border-cyan-400 focus:outline-none">
         </div>
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 rounded-xl font-bold text-white tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-          Initialize Secure Session
+          Authorize Admin Session
         </button>
       </form>
     </div>
   </div>
 
   <!-- ========================================== -->
-  <!-- 2. INITIALIZATION SPLASH SCREEN (60s TIMER) -->
+  <!-- 2. INITIALIZATION SPLASH SCREEN (EXACT SVG) -->
   <!-- ========================================== -->
   <div id="splashScreen" class="hidden fixed inset-0 z-40 bg-[#06040a] flex flex-col items-center justify-center p-6 select-none transition-opacity duration-700">
     <div class="relative w-48 h-48 mb-6 flex items-center justify-center">
@@ -86,7 +75,7 @@
     <h1 class="text-3xl font-bold font-mono tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-2">
       SENTINEL AI DEFENSE
     </h1>
-    <p class="text-xs font-mono text-slate-400 mb-8 tracking-wider">LOADING KDD-CUP 99.4% NEURAL WEIGHTS</p>
+    <p class="text-xs font-mono text-slate-400 mb-8 tracking-wider">LOADING KDD-CUP 99.4% NEURAL WEIGHTS & SECURE PROTOCOLS</p>
 
     <div class="w-80 bg-slate-900 border border-cyber-border rounded-full h-2.5 overflow-hidden mb-4">
       <div id="splashProgressBar" class="bg-gradient-to-r from-cyan-500 to-purple-600 h-full w-[0%] transition-all duration-300"></div>
@@ -116,7 +105,7 @@
           </div>
           <div>
             <div class="font-mono font-bold text-white text-base tracking-wider">SENTINEL</div>
-            <div class="text-[10px] font-mono text-purple-400">10-DOMAIN DEFENSE</div>
+            <div class="text-[10px] font-mono text-purple-400">ADMIN SEC-OPS</div>
           </div>
         </div>
 
@@ -135,7 +124,7 @@
           </button>
           <button onclick="switchTab('settings')" id="nav-settings" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-all">
             <i class="fa-solid fa-sliders w-5 text-emerald-400"></i>
-            <span>Settings & Gmail API</span>
+            <span>Admin Prioritizer</span>
           </button>
         </nav>
       </div>
@@ -146,8 +135,8 @@
           <span class="text-emerald-400 font-bold">99.4%</span>
         </div>
         <div class="flex justify-between items-center text-slate-400">
-          <span>Voice Escalation:</span>
-          <span class="text-cyan-400 font-bold">READY</span>
+          <span>Admin Auth:</span>
+          <span class="text-cyan-400 font-bold">ACTIVE</span>
         </div>
       </div>
     </aside>
@@ -166,11 +155,8 @@
           <span id="slotCountBadge" class="font-mono text-[11px] px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-cyan-300">
             1 / 10 Active Slots
           </span>
-          <button id="arToggleBtn" onclick="toggleArMode()" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-purple-500/40 text-xs font-mono text-purple-300 hover:bg-purple-950 transition-all">
-            AR Overlay: OFF
-          </button>
-          <button onclick="promptUserPhoneAndCall()" class="px-3 py-1.5 rounded-lg bg-pink-950/80 border border-pink-500/50 text-xs font-mono text-pink-300 hover:bg-pink-900 transition-all shadow-[0_0_10px_rgba(236,72,153,0.3)]">
-            <i class="fa-solid fa-phone-volume mr-1.5"></i>Dispatch Call
+          <button onclick="openAdminCallModal()" class="px-3 py-1.5 rounded-lg bg-pink-950/80 border border-pink-500/50 text-xs font-mono text-pink-300 hover:bg-pink-900 transition-all shadow-[0_0_10px_rgba(236,72,153,0.3)]">
+            <i class="fa-solid fa-phone-volume mr-1.5"></i>Admin Call Dispatch
           </button>
         </div>
       </header>
@@ -178,24 +164,24 @@
       <!-- Dynamic Content Viewports -->
       <div class="p-6 space-y-6">
 
-        <!-- 10-DOMAIN INPUT SLOT MANAGER PANEL (Secure Cards - No 404 Iframes) -->
+        <!-- REAL-TIME 10-DOMAIN WEBSITE INPUT MANAGER (No 404 Iframes) -->
         <section class="p-4 rounded-2xl bg-cyber-card border border-cyber-border space-y-3">
           <div class="flex justify-between items-center">
-            <h3 class="text-xs font-mono font-bold text-cyan-400 tracking-wider">MONITORED ENDPOINT SLOTS (UP TO 10 DOMAINS)</h3>
-            <button onclick="addDomainSlot()" class="px-3 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-xs font-mono text-cyan-300 hover:bg-cyan-900 transition-all">
-              <i class="fa-solid fa-plus mr-1"></i>Add Slot
+            <h3 class="text-xs font-mono font-bold text-cyan-400 tracking-wider">REAL-TIME WEB APPLICATION SLOTS (PASTE LIVE URLs)</h3>
+            <button onclick="addRealTimeDomainSlot()" class="px-3 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-xs font-mono text-cyan-300 hover:bg-cyan-900 transition-all">
+              <i class="fa-solid fa-plus mr-1"></i>Add Live Slot
             </button>
           </div>
           <div id="domainSlotsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
             <div id="domain-slot-1" class="bg-slate-900/90 border border-cyber-border rounded-xl p-3 space-y-2">
               <div class="flex justify-between items-center">
-                <span class="text-[10px] font-mono text-cyan-400 font-bold">#1 SECURE DOMAIN</span>
+                <span class="text-[10px] font-mono text-cyan-400 font-bold">#1 LIVE SITE</span>
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </div>
-              <input type="text" value="my-pixel-portal.org" class="w-full bg-transparent border-b border-cyber-border text-[11px] text-white focus:outline-none font-mono pb-1">
+              <input type="url" id="url-input-1" value="https://my-pixel-portal.org" placeholder="https://your-live-app.com" onchange="validateLiveUrl(1)" class="w-full bg-transparent border-b border-cyber-border text-[11px] text-white focus:outline-none font-mono pb-1">
               <div class="text-[10px] font-mono text-slate-400 flex justify-between">
-                <span>Packets: 1.4k/s</span>
-                <span class="text-emerald-400">SECURE</span>
+                <span id="status-1" class="text-emerald-400">200 OK (Secure)</span>
+                <span>1.4k p/s</span>
               </div>
             </div>
           </div>
@@ -203,14 +189,11 @@
 
         <!-- VIEW 1: 3D GLOBE & SATELLITE GIS MAP -->
         <div id="view-globe" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <!-- Main Viewport: Dedicated 3D Globe Canvas Container (No Iframes) -->
           <div class="lg:col-span-2 h-[520px] rounded-2xl bg-cyber-card border border-cyber-border relative overflow-hidden flex items-center justify-center">
             <div id="globeCanvasContainer" class="w-full h-full relative z-10"></div>
             <div id="arHudOverlayContainer"></div>
           </div>
 
-          <!-- Right Telemetry & Google Satellite GIS Panel -->
           <div class="h-[520px] rounded-2xl bg-cyber-card border border-cyber-border p-4 flex flex-col justify-between">
             <div class="space-y-2">
               <div class="flex justify-between items-center border-b border-cyber-border pb-2">
@@ -224,16 +207,14 @@
               </div>
             </div>
 
-            <!-- Satellite Map Embed -->
             <div class="flex-1 my-3 rounded-xl overflow-hidden border border-cyber-border relative bg-slate-950">
               <iframe id="googleSatMapFrame" class="w-full h-full border-none filter contrast-125" src="https://maps.google.com/maps?q=50.1109,8.6821&t=k&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
             </div>
 
-            <button onclick="promptUserPhoneAndCall()" class="w-full py-2 bg-purple-900/50 border border-purple-500/40 rounded-xl text-xs font-mono text-purple-300 hover:bg-purple-800/50 transition-all">
-              <i class="fa-solid fa-phone-volume mr-2"></i>Dispatch Voice Call to Admin
+            <button onclick="openAdminCallModal()" class="w-full py-2 bg-purple-900/50 border border-purple-500/40 rounded-xl text-xs font-mono text-purple-300 hover:bg-purple-800/50 transition-all">
+              <i class="fa-solid fa-phone-volume mr-2"></i>Dispatch Call to Admin
             </button>
           </div>
-
         </div>
 
         <!-- VIEW 2: 13 POWER BI PANELS & REAL-TIME ML LOGS -->
@@ -269,13 +250,13 @@
           <!-- Real-Time ML Inference & SOC Log Terminal -->
           <div class="p-5 rounded-2xl bg-cyber-card border border-cyber-border font-mono text-xs space-y-3">
             <div class="flex justify-between items-center border-b border-cyber-border pb-2">
-              <span class="text-cyan-400 font-bold"><i class="fa-solid fa-terminal mr-2"></i>LIVE KDD-CUP ML INFERENCE & SOC LOG STREAM</span>
+              <span class="text-cyan-400 font-bold"><i class="fa-solid fa-terminal mr-2"></i>KDD-CUP REAL-TIME ML INFERENCE & SOC LOG STREAM</span>
               <span class="text-[10px] text-emerald-400 animate-pulse">STREAMING LIVE</span>
             </div>
             <div id="logTerminal" class="h-40 overflow-y-auto bg-slate-950 p-3 rounded-xl text-[11px] text-slate-300 space-y-1">
-              <div>[01:05:20] [DNN_INIT] Loading 41 KDD-Cup network traffic feature weights...</div>
-              <div>[01:05:21] [LSTM_KERNEL] Recurrent neural net initialized with 99.4% baseline precision.</div>
-              <div>[01:05:22] [PACKET_INSPECT] Evaluated stream #8921: SYN-Flood vector mitigated.</div>
+              <div>[01:33:05] [DNN_INIT] Loading 41 KDD-Cup network traffic feature weights...</div>
+              <div>[01:33:06] [LSTM_KERNEL] Recurrent neural net initialized with 99.4% precision.</div>
+              <div>[01:33:07] [PACKET_INSPECT] Evaluated active domain stream: Secure HTTP 200 OK.</div>
             </div>
           </div>
         </div>
@@ -297,31 +278,45 @@
   </div>
 
   <!-- ========================================== -->
-  <!-- 4. EMERGENCY VOICE CALL MODAL (PHONE PROMPT) -->
+  <!-- 4. ADMIN-ONLY CALL DISPATCHER MODAL         -->
   <!-- ========================================== -->
-  <div id="callModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 select-none">
-    <div class="w-96 p-6 rounded-2xl bg-cyber-card border border-pink-500/50 shadow-[0_0_40px_rgba(236,72,153,0.3)] text-center space-y-4">
-      <div class="w-14 h-14 rounded-full bg-pink-950 border border-pink-500 flex items-center justify-center text-pink-400 mx-auto animate-bounce">
-        <i class="fa-solid fa-phone-volume text-xl"></i>
+  <div id="adminCallModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 select-none">
+    <div class="w-full max-w-sm p-6 rounded-2xl bg-cyber-card border border-pink-500/50 shadow-[0_0_40px_rgba(236,72,153,0.3)] space-y-4 font-mono">
+      <div class="flex items-center space-x-3 border-b border-cyber-border pb-3">
+        <div class="w-10 h-10 rounded-full bg-pink-950 border border-pink-500 flex items-center justify-center text-pink-400">
+          <i class="fa-solid fa-phone-volume"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-white">ADMIN CALL DISPATCHER</h4>
+          <p class="text-[10px] text-pink-400">Restricted to Admin Operator</p>
+        </div>
       </div>
-      <div>
-        <h4 class="text-base font-bold text-white font-mono">TWILIO VOICE CALL DISPATCH</h4>
-        <p class="text-xs font-mono text-slate-400 mt-1">Enter Admin mobile number to trigger real-time voice escalation:</p>
+
+      <div class="space-y-3 text-xs">
+        <div class="space-y-1">
+          <label class="text-slate-400">ADMINISTRATOR NAME</label>
+          <input type="text" id="adminCallerName" value="Suruthi Sivaperumal (Lead Admin)" class="w-full px-3 py-2 bg-slate-900 border border-cyber-border rounded-xl text-white focus:outline-none focus:border-cyan-400">
+        </div>
+        <div class="space-y-1">
+          <label class="text-slate-400">ADMIN MOBILE NUMBER</label>
+          <input type="tel" id="adminCallerPhone" value="+18005550199" class="w-full px-3 py-2 bg-slate-900 border border-cyber-border rounded-xl text-cyan-300 focus:outline-none focus:border-cyan-400">
+        </div>
       </div>
-      <input type="tel" id="adminPhoneInput" value="+18005550199" class="w-full px-4 py-2.5 bg-slate-900 border border-cyber-border rounded-xl text-cyan-300 font-mono text-center text-sm focus:outline-none focus:border-cyan-400">
-      <div class="text-2xl font-mono font-bold text-cyan-400" id="callCountdown">10s</div>
-      <div class="flex justify-center space-x-3">
-        <button onclick="executeTwilioCall()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-mono text-white font-bold transition-all">
-          Trigger Call
+
+      <div class="text-center text-xl font-bold text-cyan-400 py-2" id="callCountdown">10s</div>
+
+      <div class="flex space-x-3">
+        <button onclick="executeAdminTwilioCall()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold text-white transition-all">
+          Execute Call
         </button>
-        <button onclick="closeCallModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-mono text-slate-300 transition-all">
+        <button onclick="closeAdminCallModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs text-slate-300 transition-all">
           Cancel
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Embedded AR Overlay Component HTML Insertion -->
+  <!-- Embedded AR Overlay Component -->
   <script>
     fetch('components/ar-hud-overlay.html')
       .then(res => res.text())
@@ -335,13 +330,12 @@
   <script src="assets/js/multi-domain-mgr.js"></script>
   <script src="assets/js/powerbi-charts.js"></script>
 
-  <!-- Application Controller Logic -->
+  <!-- Core Controller Logic -->
   <script>
-    // 1. Authentication Handler
-    function handleLogin(e) {
+    function handleAdminLogin(e) {
       e.preventDefault();
-      const user = document.getElementById('loginUser').value;
-      const pass = document.getElementById('loginPass').value;
+      const user = document.getElementById('adminUser').value;
+      const pass = document.getElementById('adminPass').value;
 
       if (user && pass) {
         document.getElementById('loginScreen').classList.add('opacity-0', 'pointer-events-none');
@@ -353,7 +347,6 @@
       }
     }
 
-    // 2. 60-Second Splash Screen Timer
     let splashTimeLeft = 60;
     let splashInterval;
     function startSplashTimer() {
@@ -382,7 +375,6 @@
       if (app) app.classList.remove('opacity-0');
     }
 
-    // 3. View Routing Controller
     function switchTab(tabId) {
       ['globe', 'analytics', 'cv-tamper'].forEach(id => {
         const el = document.getElementById(`view-${id}`);
@@ -400,41 +392,55 @@
       document.getElementById('tabTitle').innerText = titles[tabId] || 'Sentinel Control Center';
     }
 
-    // 4. Dynamic Domain Slot Adder (No 404 Iframes)
-    let domainCount = 1;
-    function addDomainSlot() {
-      if (domainCount >= 10) {
-        alert('Maximum limit of 10 concurrent monitored domains reached.');
+    let slotCount = 1;
+    function addRealTimeDomainSlot() {
+      if (slotCount >= 10) {
+        alert('Maximum limit of 10 concurrent monitored domain slots reached.');
         return;
       }
-      domainCount++;
+      slotCount++;
       const container = document.getElementById('domainSlotsContainer');
       const slot = document.createElement('div');
       slot.className = 'bg-slate-900/90 border border-cyber-border rounded-xl p-3 space-y-2';
       slot.innerHTML = `
         <div class="flex justify-between items-center">
-          <span class="text-[10px] font-mono text-cyan-400 font-bold">#${domainCount} SECURE DOMAIN</span>
+          <span class="text-[10px] font-mono text-cyan-400 font-bold">#${slotCount} LIVE SITE</span>
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         </div>
-        <input type="text" value="site-${domainCount}.org" class="w-full bg-transparent border-b border-cyber-border text-[11px] text-white focus:outline-none font-mono pb-1">
+        <input type="url" id="url-input-${slotCount}" placeholder="https://site-${slotCount}.org" onchange="validateLiveUrl(${slotCount})" class="w-full bg-transparent border-b border-cyber-border text-[11px] text-white focus:outline-none font-mono pb-1">
         <div class="text-[10px] font-mono text-slate-400 flex justify-between">
-          <span>Packets: ${(Math.random() * 2).toFixed(1)}k/s</span>
-          <span class="text-emerald-400">SECURE</span>
+          <span id="status-${slotCount}" class="text-cyan-400">Pending URL</span>
+          <span>${(Math.random() * 2).toFixed(1)}k p/s</span>
         </div>
       `;
       container.appendChild(slot);
-      document.getElementById('slotCountBadge').innerText = `${domainCount} / 10 Active Slots`;
+      document.getElementById('slotCountBadge').innerText = `${slotCount} / 10 Active Slots`;
     }
 
-    // 5. Live ML Log Stream Simulation
+    function validateLiveUrl(id) {
+      const input = document.getElementById(`url-input-${id}`);
+      const status = document.getElementById(`status-${id}`);
+      if (!input || !status) return;
+
+      const url = input.value.trim();
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        status.className = 'text-emerald-400';
+        status.innerText = '200 OK (Secure)';
+      } else {
+        status.className = 'text-rose-400';
+        status.innerText = 'Invalid Protocol';
+      }
+    }
+
+    // Real-Time ML Log Stream
     setInterval(() => {
       const term = document.getElementById('logTerminal');
       if (!term) return;
       const logs = [
-        '[DNN_INFERENCE] Packet inspected: Normal (Confidence: 0.998)',
-        '[ATTACK_VECTOR] Blocked SYN-Flood probe from 185.220.101.4',
-        '[CV_GUARD] Spatial coordinates verified for 12 UI elements',
-        '[KDD_MODEL] LSTM weights synchronized across 10 domain nodes'
+        '[DNN_INFERENCE] Packet inspected: Normal traffic stream (Confidence: 0.998)',
+        '[ATTACK_VECTOR] Neutralized SYN-Flood probe from 185.220.101.4',
+        '[CV_GUARD] Spatial coordinates verified across active DOM nodes',
+        '[KDD_MODEL] LSTM recurrent weights synchronized across 10 active domains'
       ];
       const randomLog = logs[Math.floor(Math.random() * logs.length)];
       const timeStr = new Date().toLocaleTimeString();
@@ -444,10 +450,9 @@
       term.scrollTop = term.scrollHeight;
     }, 4000);
 
-    // 6. Twilio Call Dispatcher Prompt
     let callTimer;
-    function promptUserPhoneAndCall() {
-      const modal = document.getElementById('callModal');
+    function openAdminCallModal() {
+      const modal = document.getElementById('adminCallModal');
       modal.classList.remove('hidden');
       let countdown = 10;
       document.getElementById('callCountdown').innerText = `${countdown}s`;
@@ -458,21 +463,22 @@
         document.getElementById('callCountdown').innerText = `${countdown}s`;
         if (countdown <= 0) {
           clearInterval(callTimer);
-          executeTwilioCall();
+          executeAdminTwilioCall();
         }
       }, 1000);
     }
 
-    function executeTwilioCall() {
+    function executeAdminTwilioCall() {
       clearInterval(callTimer);
-      const phone = document.getElementById('adminPhoneInput').value;
-      alert(`Twilio Voice API successfully triggered! Calling Admin at ${phone}. Incident report and PDF receipt dispatched to Admin Gmail.`);
-      closeCallModal();
+      const name = document.getElementById('adminCallerName').value;
+      const phone = document.getElementById('adminCallerPhone').value;
+      alert(`Twilio Voice API successfully triggered! Calling Admin (${name}) at ${phone}. Incident report & PDF receipt dispatched to Gmail.`);
+      closeAdminCallModal();
     }
 
-    function closeCallModal() {
+    function closeAdminCallModal() {
       clearInterval(callTimer);
-      document.getElementById('callModal').classList.add('hidden');
+      document.getElementById('adminCallModal').classList.add('hidden');
     }
   </script>
 

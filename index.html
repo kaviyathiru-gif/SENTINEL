@@ -25,6 +25,11 @@
       }
     }
   </script>
+
+  <style>
+    iframe { border: none; background-color: #06040a; }
+    #globeCanvasContainer canvas { display: block; width: 100% !important; height: 100% !important; margin: auto; }
+  </style>
 </head>
 <body class="bg-cyber-bg text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden min-h-screen">
 
@@ -179,10 +184,10 @@
           </div>
         </section>
 
-        <!-- VIEW 1: 3D GLOBE & SATELLITE GIS MAP -->
+        <!-- VIEW 1: 3D GLOBE & SATELLITE GIS MAP (Centered Canvas) -->
         <div id="view-globe" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="lg:col-span-2 h-[520px] rounded-2xl bg-cyber-card border border-cyber-border relative overflow-hidden flex items-center justify-center">
-            <div id="globeCanvasContainer" class="w-full h-full relative z-10"></div>
+            <div id="globeCanvasContainer" class="w-full h-full relative z-10 flex items-center justify-center"></div>
             <div id="arHudOverlayContainer"></div>
           </div>
 
@@ -448,7 +453,6 @@
       e.dataTransfer.setData('text/plain', 'KDD-CUP-BENCHMARK');
     }
 
-    // Dynamic Slot Engine (Globally accessible to satisfy test integrity runners)
     let slotCount = 1;
     window.addDomainSlot = function() {
       if (slotCount >= 10) {

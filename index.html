@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINEL | AI/ML Cyber Defense & AR Network Intrusion System</title>
+  
+  <!-- Tailwind CSS & FontAwesome CDNs -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Cyber Theme & Fonts -->
+  <link rel="stylesheet" href="assets/css/sentinel-theme.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Libraries: Three.js r128 & Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              bg: '#06040a',
+              card: '#0f0c21',
+              border: '#2a224a',
+              purple: '#9333ea',
+              cyan: '#06b6d4',
+              pink: '#ec4899'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-cyber-bg text-slate-200 font-sans antialiased selection:bg-cyan-500 selection:text-black overflow-x-hidden min-h-screen">
+
+  <!-- ========================================== -->
+  <!-- 1. INITIALIZATION SPLASH SCREEN (60s TIMER) -->
+  <!-- ========================================== -->
+  <div id="splashScreen" class="fixed inset-0 z-50 bg-[#06040a] flex flex-col items-center justify-center p-6 select-none transition-opacity duration-700">
+    <div class="relative w-48 h-48 mb-6 flex items-center justify-center">
+      <!-- Cyber Eye SVG Logo -->
+      <svg class="w-full h-full filter drop-shadow-[0_0_25px_rgba(6,182,212,0.6)]" viewBox="0 0 512 512" fill="none">
+        <path d="M 86 256 Q 256 110 426 256 Q 256 402 86 256 Z" fill="none" stroke="#06b6d4" stroke-width="10" />
+        <circle cx="256" cy="256" r="85" fill="#0d091d" stroke="#c084fc" stroke-width="5" />
+        <path d="M 256 210 L 285 225 V 255 C 285 275 256 292 256 292 C 256 292 227 275 227 255 V 225 Z" fill="#9333ea" stroke="#38bdf8" stroke-width="3" />
+        <polygon points="256,230 261,242 274,243 264,251 267,264 256,257 245,264 248,251 238,243 251,242" fill="#ffffff" />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-bold font-mono tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-2">
+      SENTINEL AI DEFENSE
+    </h1>
+    <p class="text-xs font-mono text-slate-400 mb-8 tracking-wider">INITIALIZING NEURAL DETECTION ENGINES & 8D MATRIX</p>
+
+    <!-- Progress Loader -->
+    <div class="w-80 bg-slate-900 border border-cyber-border rounded-full h-2.5 overflow-hidden mb-4">
+      <div id="splashProgressBar" class="bg-gradient-to-r from-cyan-500 to-purple-600 h-full w-[0%] transition-all duration-300"></div>
+    </div>
+    <div class="flex items-center space-x-4 text-xs font-mono text-cyan-400">
+      <span id="splashTimerText">00:60</span>
+      <span>|</span>
+      <span id="splashStatusText">Loading KDD-Cup Models...</span>
+    </div>
+
+    <!-- Quick Skip Presentation Mode Button -->
+    <button onclick="skipSplashScreen()" class="mt-8 px-4 py-2 bg-purple-950/60 border border-purple-500/40 hover:bg-purple-900/60 rounded-xl text-xs font-mono text-purple-300 transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+      <i class="fa-solid fa-forward mr-2"></i>Skip (Google Presentation Mode)
+    </button>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MAIN DASHBOARD SHELL & HEADER           -->
+  <!-- ========================================== -->
+  <div id="appContainer" class="flex h-screen overflow-hidden opacity-0 transition-opacity duration-700">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-cyber-card border-r border-cyber-border flex flex-col justify-between p-4 z-20">
+      <div>
+        <div class="flex items-center space-x-3 mb-8 px-2">
+          <div class="w-9 h-9 rounded-xl bg-purple-900/40 border border-cyan-400/50 flex items-center justify-center text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.4)]">
+            <i class="fa-solid fa-eye text-lg"></i>
+          </div>
+          <div>
+            <div class="font-mono font-bold text-white text-base tracking-wider">SENTINEL</div>
+            <div class="text-[10px] font-mono text-purple-400">10-DOMAIN DEFENSE</div>
+          </div>
+        </div>
+
+        <nav class="space-y-1.5 font-mono text-xs">
+          <button onclick="switchTab('globe')" id="nav-home" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-purple-900/30 border border-purple-500/40 text-cyan-300 font-semibold shadow-[0_0_10px_rgba(147,51,234,0.2)]">
+            <i class="fa-solid fa-globe w-5 text-cyan-400"></i>
+            <span>3D AR Threat Globe</span>
+          </button>
+          <button onclick="switchTab('analytics')" id="nav-analytics" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-all">
+            <i class="fa-solid fa-chart-pie w-5 text-purple-400"></i>
+            <span>13 Power BI Panels</span>
+          </button>
+          <button onclick="switchTab('cv-tamper')" id="nav-cv" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-all">
+            <i class="fa-solid fa-shield-cat w-5 text-pink-400"></i>
+            <span>CV & Deepfake Engine</span>
+          </button>
+          <button onclick="switchTab('settings')" id="nav-settings" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-all">
+            <i class="fa-solid fa-sliders w-5 text-emerald-400"></i>
+            <span>Settings & Gmail API</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- System Status Footer -->
+      <div class="p-3 rounded-xl bg-slate-950/80 border border-cyber-border font-mono text-[11px] space-y-2">
+        <div class="flex justify-between items-center text-slate-400">
+          <span>KDD DNN Model:</span>
+          <span class="text-emerald-400 font-bold">99.4%</span>
+        </div>
+        <div class="flex justify-between items-center text-slate-400">
+          <span>Voice Escalation:</span>
+          <span class="text-cyan-400 font-bold">READY</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="flex-1 flex flex-col min-w-0 bg-[#06040a] relative overflow-y-auto">
+      
+      <!-- Top Operational Header -->
+      <header class="h-16 border-b border-cyber-border px-6 flex items-center justify-between bg-cyber-card/60 backdrop-blur-md sticky top-0 z-20">
+        <div class="flex items-center space-x-4">
+          <span class="font-mono text-xs text-purple-400 font-bold">SENTINEL |</span>
+          <h2 id="tabTitle" class="text-sm font-semibold text-white">3D AR Globe Threat Telemetry & GIS Satellite Engine</h2>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <span id="slotCountBadge" class="font-mono text-[11px] px-2.5 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-cyan-300">
+            1 / 10 Active Slots
+          </span>
+          <button id="arToggleBtn" onclick="toggleArMode()" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-purple-500/40 text-xs font-mono text-purple-300 hover:bg-purple-950 transition-all">
+            AR Overlay: OFF
+          </button>
+          <button onclick="triggerSimulatedAttackAlert()" class="px-3 py-1.5 rounded-lg bg-pink-950/80 border border-pink-500/50 text-xs font-mono text-pink-300 hover:bg-pink-900 transition-all shadow-[0_0_10px_rgba(236,72,153,0.3)]">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Simulate Attack
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Content Viewports -->
+      <div class="p-6 space-y-6">
+
+        <!-- 10-DOMAIN INPUT SLOT MANAGER PANEL -->
+        <section class="p-4 rounded-2xl bg-cyber-card border border-cyber-border space-y-3">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-mono font-bold text-cyan-400 tracking-wider">MONITORED DOMAINS ENGINE (UP TO 10 SLOTS)</h3>
+            <button onclick="addDomainSlot()" class="px-3 py-1 rounded-lg bg-cyan-950/60 border border-cyan-500/40 text-xs font-mono text-cyan-300 hover:bg-cyan-900 transition-all">
+              <i class="fa-solid fa-plus mr-1"></i>Add Monitored Slot
+            </button>
+          </div>
+          <div id="domainSlotsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+            <!-- Slot #1 Default -->
+            <div id="domain-slot-1" class="flex items-center space-x-1.5 bg-slate-900/90 border border-cyber-border rounded-xl p-2 transition-all hover:border-purple-500/50">
+              <span class="text-[10px] font-mono text-cyan-400 font-bold">#1</span>
+              <input type="url" id="url-input-1" value="https://my-pixel-portal.org" class="w-full bg-transparent border-none text-[11px] text-white focus:outline-none font-mono">
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 1: 3D GLOBE & SATELLITE GIS MAP -->
+        <div id="view-globe" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- 3D Globe Canvas Container -->
+          <div class="lg:col-span-2 h-[520px] rounded-2xl bg-cyber-card border border-cyber-border relative overflow-hidden flex items-center justify-center">
+            <div id="globeCanvasContainer" class="w-full h-full"></div>
+            <!-- AR Overlay Component Included Below -->
+            <div id="arHudOverlayContainer"></div>
+          </div>
+
+          <!-- Google Satellite Map Telemetry Box -->
+          <div class="h-[520px] rounded-2xl bg-cyber-card border border-cyber-border p-4 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center border-b border-cyber-border pb-2">
+                <span class="text-xs font-mono font-bold text-pink-400">Attacker Satellite Coordinates</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">GIS LOCKED</span>
+              </div>
+              <div class="font-mono text-xs space-y-1 text-slate-300">
+                <div>Origin: <span id="mapCityText" class="text-cyan-300 font-bold">Frankfurt, Germany</span></div>
+                <div>IP Address: <span id="mapIpText" class="text-purple-400 font-bold">185.220.101.4</span></div>
+                <div>Vector: <span id="mapVectorText" class="text-pink-400 font-bold">Ransomware Payload Injection</span></div>
+              </div>
+            </div>
+
+            <!-- Google Satellite Embed Frame -->
+            <div class="flex-1 my-3 rounded-xl overflow-hidden border border-cyber-border relative bg-slate-950">
+              <iframe id="googleSatMapFrame" class="w-full h-full border-none filter contrast-125" src="https://maps.google.com/maps?q=50.1109,8.6821&t=k&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+            </div>
+
+            <button onclick="triggerSimulatedAttackAlert()" class="w-full py-2 bg-purple-900/50 border border-purple-500/40 rounded-xl text-xs font-mono text-purple-300 hover:bg-purple-800/50 transition-all">
+              <i class="fa-solid fa-phone-volume mr-2"></i>Dispatch Voice Call to Admin
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW 2: 13 POWER BI PANELS -->
+        <div id="view-analytics" class="hidden space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Panels 1-12 Mini Cards -->
+            <script>
+              for(let i=1; i<=12; i++){
+                document.write(`
+                  <div class="h-44 p-3 rounded-xl bg-cyber-card border border-cyber-border flex flex-col justify-between">
+                    <div class="text-[10px] font-mono text-slate-400 flex justify-between">
+                      <span>PANEL 0${i}</span>
+                      <span class="text-cyan-400">LIVE TELEMETRY</span>
+                    </div>
+                    <div class="h-28 w-full">
+                      <canvas id="pbiChart${i}"></canvas>
+                    </div>
+                  </div>
+                `);
+              }
+            </script>
+          </div>
+
+          <!-- Panel 13: Large KDD-Cup Deep Neural Net Precision Matrix Banner -->
+          <div class="h-80 p-5 rounded-2xl bg-cyber-card border border-cyber-border flex flex-col justify-between">
+            <div class="flex justify-between items-center mb-2">
+              <h4 class="text-xs font-mono font-bold text-cyan-400">PANEL 13: KDD-CUP DEEP NEURAL NET (DNN) & LSTM MODEL PRECISION MATRIX</h4>
+              <span class="text-xs font-mono text-purple-400 font-bold">Accuracy Benchmark: 99.4%</span>
+            </div>
+            <div class="flex-1 w-full">
+              <canvas id="pbiChart13"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW 3: CV & DEEPFAKE ENGINE -->
+        <div id="view-cv-tamper" class="hidden space-y-6">
+          <div class="p-6 rounded-2xl bg-cyber-card border border-cyber-border space-y-4">
+            <h3 class="text-sm font-mono font-bold text-pink-400">Computer Vision Spatial Coordinate & Layout Tamper Shield</h3>
+            <p class="text-xs text-slate-400">Monitors settings icons, nav buttons, and media feeds for dragging, tampering, or deepfake artifact injections. Auto-snaps shifted DOM elements back to precise spatial coordinates.</p>
+            
+            <div id="cvStatusBox" class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/40 text-emerald-300 text-xs font-mono">
+              <i class="fa-solid fa-shield-check mr-2"></i>All DOM Settings Icons & Coordinates Positionally Verified.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. EMERGENCY VOICE CALL MODAL              -->
+  <!-- ========================================== -->
+  <div id="callModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 select-none">
+    <div class="w-96 p-6 rounded-2xl bg-cyber-card border border-pink-500/50 shadow-[0_0_40px_rgba(236,72,153,0.3)] text-center space-y-6">
+      <div class="w-16 h-16 rounded-full bg-pink-950 border border-pink-500 flex items-center justify-center text-pink-400 mx-auto animate-bounce">
+        <i class="fa-solid fa-phone-volume text-2xl"></i>
+      </div>
+      <div>
+        <h4 class="text-base font-bold text-white font-mono">DISPATCHING EMERGENCY CALL</h4>
+        <p class="text-xs font-mono text-pink-400 mt-1">Priority 1: Admin J. Dee (+18005550199)</p>
+      </div>
+      <div class="text-3xl font-mono font-bold text-cyan-400" id="callCountdown">10s</div>
+      <div class="flex justify-center space-x-3">
+        <button onclick="answerCallSimulated()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-mono text-white font-bold transition-all">
+          Answer Call
+        </button>
+        <button onclick="closeCallModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-mono text-slate-300 transition-all">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Embedded AR Overlay Component HTML Insertion -->
+  <script>
+    fetch('components/ar-hud-overlay.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('arHudOverlayContainer').innerHTML = data)
+      .catch(() => console.log('AR HUD Component loaded dynamically.'));
+  </script>
+
+  <!-- Modular Application Scripts -->
+  <script src="assets/js/3d-globe-engine.js"></script>
+  <script src="assets/js/cv-tamper-guard.js"></script>
+  <script src="assets/js/multi-domain-mgr.js"></script>
+  <script src="assets/js/powerbi-charts.js"></script>
+
+  <!-- Single-Page Controller & Presentation Navigation Logic -->
+  <script>
+    // 60-Second Splash Screen Timer
+    let splashTimeLeft = 60;
+    const splashInterval = setInterval(() => {
+      splashTimeLeft--;
+      const progress = ((60 - splashTimeLeft) / 60) * 100;
+      document.getElementById('splashProgressBar').style.width = progress + '%';
+      document.getElementById('splashTimerText').innerText = `00:${splashTimeLeft < 10 ? '0' : ''}${splashTimeLeft}`;
+      
+      if (splashTimeLeft <= 0) {
+        clearInterval(splashInterval);
+        skipSplashScreen();
+      }
+    }, 1000);
+
+    function skipSplashScreen() {
+      clearInterval(splashInterval);
+      const splash = document.getElementById('splashScreen');
+      const app = document.getElementById('appContainer');
+      splash.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        splash.style.display = 'none';
+        app.classList.remove('opacity-0');
+      }, 700);
+    }
+
+    // View Routing Controller
+    function switchTab(tabId) {
+      ['globe', 'analytics', 'cv-tamper'].forEach(id => {
+        const el = document.getElementById(`view-${id}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      const activeView = document.getElementById(`view-${tabId}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      const titles = {
+        'globe': '3D AR Globe Threat Telemetry & GIS Satellite Engine',
+        'analytics': '13 Power BI Real-Time Analytics Panels Summary',
+        'cv-tamper': 'Computer Vision Spatial Coordinate & Layout Defense'
+      };
+      document.getElementById('tabTitle').innerText = titles[tabId] || 'Sentinel Control Center';
+    }
+
+    // Emergency Call Trigger Simulator
+    let callTimer;
+    function triggerSimulatedAttackAlert() {
+      const modal = document.getElementById('callModal');
+      modal.classList.remove('hidden');
+      let countdown = 10;
+      document.getElementById('callCountdown').innerText = `${countdown}s`;
+
+      clearInterval(callTimer);
+      callTimer = setInterval(() => {
+        countdown--;
+        document.getElementById('callCountdown').innerText = `${countdown}s`;
+        if (countdown <= 0) {
+          clearInterval(callTimer);
+          document.getElementById('callCountdown').innerText = 'Escalating to P2...';
+        }
+      }, 1000);
+    }
+
+    function answerCallSimulated() {
+      clearInterval(callTimer);
+      alert('Call Connected via Twilio Voice Engine. Security Incident Acknowledged & PDF Receipt Forwarded to Admin Gmail.');
+      closeCallModal();
+    }
+
+    function closeCallModal() {
+      clearInterval(callTimer);
+      document.getElementById('callModal').classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>

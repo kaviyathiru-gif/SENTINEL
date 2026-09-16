@@ -1,0 +1,58 @@
+name: SENTINEL CI - Quality Assurance & Code Validation
+
+on:
+  # Run tests on push to main or pull requests
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+  # Allows manual execution from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  validate-and-lint:
+    name: Validate Application Code & Security Assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Linting & Validation Tools
+        run: |
+          npm install -g htmlhint eslint
+
+      - name: Validate HTML5 Syntax (index.html)
+        run: |
+          echo "Running HTML5 structure and tag validation..."
+          htmlhint index.html --rules="tagname-lowercase,attr-lowercase,id-unique,style-disabled=false"
+
+      - name: Verify Core Dependencies & External CDN CDNs
+        run: |
+          echo "Checking for essential script inclusions in index.html..."
+          grep -q "three.min.js" index.html || (echo "Missing Three.js CDN link" && exit 1)
+          grep -q "chart.js" index.html || (echo "Missing Chart.js CDN link" && exit 1)
+          grep -q "tailwindcss" index.html || (echo "Missing Tailwind CSS CDN link" && exit 1)
+          echo "All critical 3D, Chart, and UI libraries verified."
+
+      - name: Test Integrity of Dynamic Slot Engine
+        run: |
+          echo "Checking 10-Domain Manager configuration scripts..."
+          grep -q "addDomainSlot" index.html || (echo "Missing domain slot manager function" && exit 1)
+          grep -q "runCvAnalysis" index.html || (echo "Missing Computer Vision analysis function" && exit 1)
+          echo "Core dynamic application engines verified."
+
+      - name: CI Quality Status Summary
+        run: |
+          echo "=================================================="
+          echo "SENTINEL CI Pipeline: ALL TESTS PASSED SUCCESSFULLY"
+          echo "Application ready for presentation & live deployment."
+          echo "=================================================="

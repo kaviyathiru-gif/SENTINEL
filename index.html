@@ -115,12 +115,38 @@
       <!-- System Status Footer -->
       <div class="p-3 rounded-xl bg-slate-950/80 border border-cyber-border font-mono text-[11px] space-y-2">
         <div class="flex justify-between items-center text-slate-400">
-          <span>KDD DNN Model:</span>
-          <span class="text-emerald-400 font-bold">99.4%</span>
-        </div>
-        <div class="flex justify-between items-center text-slate-400">
-          <span>Voice Escalation:</span>
-          <span class="text-cyan-400 font-bold">READY</span>
+          <!-- CORRECTED 3D GLOBE CONTAINER -->
+<div id="view-globe" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- 3D Globe Canvas Container (Ensures canvas renders, not external pages) -->
+  <div class="lg:col-span-2 h-[520px] rounded-2xl bg-cyber-card border border-cyber-border relative overflow-hidden flex items-center justify-center">
+    <div id="globeCanvasContainer" class="w-full h-full relative z-10"></div>
+    <div id="arHudOverlayContainer"></div>
+  </div>
+
+  <!-- Google Satellite Map Telemetry Panel -->
+  <div class="h-[520px] rounded-2xl bg-cyber-card border border-cyber-border p-4 flex flex-col justify-between">
+    <div class="space-y-2">
+      <div class="flex justify-between items-center border-b border-cyber-border pb-2">
+        <span class="text-xs font-mono font-bold text-pink-400">Attacker Satellite Coordinates</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">GIS LOCKED</span>
+      </div>
+      <div class="font-mono text-xs space-y-1 text-slate-300">
+        <div>Origin: <span id="mapCityText" class="text-cyan-300 font-bold">Frankfurt, Germany</span></div>
+        <div>IP Address: <span id="mapIpText" class="text-purple-400 font-bold">185.220.101.4</span></div>
+        <div>Vector: <span id="mapVectorText" class="text-pink-400 font-bold">Ransomware Payload Injection</span></div>
+      </div>
+    </div>
+
+    <!-- Satellite Map Embed -->
+    <div class="flex-1 my-3 rounded-xl overflow-hidden border border-cyber-border relative bg-slate-950">
+      <iframe id="googleSatMapFrame" class="w-full h-full border-none filter contrast-125" src="https://maps.google.com/maps?q=50.1109,8.6821&t=k&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+    </div>
+
+    <button onclick="triggerSimulatedAttackAlert()" class="w-full py-2 bg-purple-900/50 border border-purple-500/40 rounded-xl text-xs font-mono text-purple-300 hover:bg-purple-800/50 transition-all">
+      <i class="fa-solid fa-phone-volume mr-2"></i>Dispatch Voice Call to Admin
+    </button>
+  </div>
+</div>
         </div>
       </div>
     </aside>
